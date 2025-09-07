@@ -9,7 +9,7 @@ Look at the [release page](https://github.com/missehsjune/resident-evil-5-random
 
 First, download the latest version from the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases), as well as [ARCtool by FluffyQuack](https://www.fluffyquack.com/tools/ARCtool.rar).
 
-(Optional) Make a backup of the level files (s100.arc through s512.arc) if you want to be able to revert to vanilla enemy spawns, or to reset enemy variety.These files can be located within the game install at *\steamapps\common\Resident Evil 5\nativePC_MT\Image\Archive*.
+(Optional/Recommended) Make a backup of the level files (s100.arc through s512.arc) if you want to be able to revert to vanilla enemy spawns, or to reset enemy variety.These files can be located within the game install at *\steamapps\common\Resident Evil 5\nativePC_MT\Image\Archive*.
 
 Next, copy ARCtool.exe into the location of the level files. Launch the program and select the folder containing ARCtool.exe.
 
@@ -28,6 +28,7 @@ Provide a number for the program to use as the basis for the randomization.
 The randomizer can be set to make entire spawn groups only consist of one enemy (single enemy per spawn group), or to retain the original variety present in the file (match original game's variety). 
 
 If a spawn group consisted of three enemies, the second option will randomize that spawn group to contain three different enemies.
+*MATCH ORIGINAL GAME'S VARIETY REQUIRES FRESH FILES TO WORK. IF YOU HAVE RANDOMIZED THE FILES WITH THE FIRST OPTION, THE SECOND OPTION CANNOT ADD VARIETY BACK.*
 
 **Levels to Randomize**
 

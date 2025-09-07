@@ -1,6 +1,6 @@
 ﻿namespace re5_randomizer_gui
     {
-    partial class Form1
+    partial class Randomizer
         {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
             {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Randomizer));
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonFolderSelect = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -243,11 +243,11 @@
             this.radioButton5.Text = "Only safe enemies";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // Randomizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 250);
+            this.ClientSize = new System.Drawing.Size(597, 241);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.labelEnemySelection);
             this.Controls.Add(this.groupBox2);
@@ -261,7 +261,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonFolderSelect);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "Randomizer";
             this.Text = "Resident Evil 5 Randomizer";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
