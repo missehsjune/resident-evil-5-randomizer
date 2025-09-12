@@ -5,6 +5,10 @@ This is a little personal project I set for myself, to see if I could randomize 
 
 Look at the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases) for download links.
 
+# Requirements
+
+This program was made in .NET Framework 4.7.2 so [installing the .NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472) should be sufficient.
+
 # Usage
 
 First, download the latest version from the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases), as well as [ARCtool by FluffyQuack](https://www.fluffyquack.com/tools/ARCtool.rar).
@@ -28,6 +32,7 @@ Provide a number for the program to use as the basis for the randomization.
 The randomizer can be set to make entire spawn groups only consist of one enemy (single enemy per spawn group), or to retain the original variety present in the file (match original game's variety). 
 
 If a spawn group consisted of three enemies, the second option will randomize that spawn group to contain three different enemies.
+
 *MATCH ORIGINAL GAME'S VARIETY REQUIRES FRESH FILES TO WORK. IF YOU HAVE RANDOMIZED THE FILES WITH THE FIRST OPTION, THE SECOND OPTION CANNOT ADD VARIETY BACK.*
 
 **Levels to Randomize**

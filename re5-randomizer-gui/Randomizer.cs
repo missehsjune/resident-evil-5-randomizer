@@ -55,6 +55,14 @@ namespace re5_randomizer_gui
             randomize();
             this.buttonRandomize.Enabled = true;
             }
+
+        /// <summary>
+        /// Method <c>ARCOperations</c> Handles using an external tool to decompress and compress game files into modifiable text files.
+        /// </summary>
+        /// <param name="pathToFiles">String containing the path to the folder containing the external tool and the game files.</param>
+        /// <param name="file">String containing the name of the current file.</param>
+        /// <param name="startInfo">The settings for running the external tool.</param>
+        /// <param name="process">The process that will be used to run the external tool.</param>
         public static void ARCOperations(string pathToFiles, string file, ProcessStartInfo startInfo, Process process)
             {
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -67,6 +75,16 @@ namespace re5_randomizer_gui
             Thread.Sleep(10);
             }
 
+        /// <summary>
+        /// Method <c>organizeXML</c> Handles a large chunk of generating the XML file to replace enemies, methodized to reduce duplicate code.
+        /// </summary>
+        /// <param name="fileContent">String containing the contents of the current file.</param>
+        /// <param name="startIndex">The start position within the file contents to start searching from.</param>
+        /// <param name="fileName">String containing the name of the current file.</param>
+        /// <param name="lifeRandom">The Random entity used to generate a random life value for the enemy.</param>
+        /// <param name="currentEnemy">The randomly selected current enemy whose data is used to fill in the file.</param>
+        /// <param name="lifeMult">The dictionary of multipliers to be used based on what level the current file is.</param>
+        /// <returns></returns>
         public static string organizeXML(string fileContent, int startIndex, string fileName, Random lifeRandom, Enemy currentEnemy, Dictionary<string, decimal> lifeMult)
             {
 
@@ -93,30 +111,41 @@ namespace re5_randomizer_gui
 
             return returnValue;
             }
+
+        /// <summary>
+        /// Method <c>randomize</c> The main randomization method. Handles majority of logic for randomizing.
+        /// </summary>
         private void randomize()
             {
+            //Creation of spoiler log for users to check to see what enemies were put in game, as well as checking what settings were used to randomize.
             string spoilerLog = "";
 
             //Grab value for the random seed from the numberbox value.
             int randomSeed = Convert.ToInt32(this.numericUpDown1.Value);
             Random enemyRandom = new Random(randomSeed);
             Random lifeRandom = new Random(randomSeed);
+
+            //Adding the chosen seed number to spoiler log.
             spoilerLog += "Seed number: " + randomSeed + "\r\n\r\n";
 
             //List of all ARC files/folders to check for XML files, as well as for unpacking and repacking ARC files.
             string[] listOfFiles = { "s100", "s102", "s104", "s105", "s106", "s107", "s108", "s113", "s114", "s115", "s116", "s117", "s118", "s119", "s200", "s201", "s202", "s203", "s204", "s207", "s209", "s300", "s301", "s302", "s303", "s305", "s307", "s310", "s311", "s313", "s314", "s315", "s316", "s500", "s501", "s504", "s505" };
             List<string> exemptFiles = new List<string> { "s104_em03.lot.xml", "s108_em00.lot.xml", "s114_em00.lot.xml", "s114_em13.lot.xml", "s104_em00.lot.xml", "s307_em05.lot.xml", "s314_em05.lot.xml", "s314_em06.lot.xml", "s505_em08.lot.xml" };
 
+            //Adds a section for the options the user has selected.
             spoilerLog += "Selected options: \r\n";
 
+            //Adds first set of options.
             spoilerLog += "Enemy Variety - ";
 
             if (this.radioButton2.Checked)
                 {
+                //Adds selected option.
                 spoilerLog += "Match original game's variety\r\n";
                 }
             else
                 {
+                //Adds selected option.
                 spoilerLog += "Single enemy per spawn group\r\n";
                 }
 
@@ -132,10 +161,12 @@ namespace re5_randomizer_gui
                 listOfFiles.Append("s508");
                 listOfFiles.Append("s511");
 
+                //Adds selected option.
                 spoilerLog += "All non-guaranteed crash levels\r\n";
                 }
             else
                 {
+                //Adds selected option.
                 spoilerLog += "Only safe levels\r\n";
                 }
 
@@ -162,6 +193,7 @@ namespace re5_randomizer_gui
                 new Enemy { gameID = "uEm92", minLife = 1200, maxLife = 1300, name = "Allyson", txtData = "Hash = 82723943\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mbArmed; Type = bool; unknown = 0; Size = 1\r\nName = mArmNum; Type = s32; unknown = 0; Size = 4\r\nName = mArmId; Type = s32; unknown = 0; Size = 4\r\nName = mArmSetJoint; Type = u32; unknown = 0; Size = 4\r\nName = mIsExtra; Type = bool; unknown = 0; Size = 1\r\nName = mExtraNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsActing; Type = bool; unknown = 0; Size = 1\r\nName = mAttribute; Type = u32; unknown = 0; Size = 4\r\nName = mPlagaType; Type = u32; unknown = 0; Size = 4\r\nName = mSubBomb; Type = u32; unknown = 0; Size = 4\r\nName = mAttackType; Type = u32; unknown = 0; Size = 4\r\nName = mMaskType; Type = s32; unknown = 0; Size = 4\r\nName = mbLefty; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckEvent; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckLimitY; Type = f32; unknown = 128; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm10\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm92\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"82723943\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"2.7920019627\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbArmed\" value=\"false\"/>\r\n\t\t\t\t<s32 name=\"mArmNum\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mArmId\" value=\"459008\"/>\r\n\t\t\t\t<u32 name=\"mArmSetJoint\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsExtra\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mExtraNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsActing\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mAttribute\" value=\"1152\"/>\r\n\t\t\t\t<u32 name=\"mPlagaType\" value=\"1\"/>\r\n\t\t\t\t<u32 name=\"mSubBomb\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAttackType\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mMaskType\" value=\"-1\"/>\r\n\t\t\t\t<bool name=\"mbLefty\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbNeckEvent\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mbNeckLimitY\" value=\"90.0000076294\"/>" }
                 };
 
+            //Adds second set of options.
             spoilerLog += "Enemy List to Use - ";
 
             if (this.radioButton6.Checked)
@@ -180,10 +212,12 @@ namespace re5_randomizer_gui
                 enemyList.Add(new Enemy { gameID = "uEm83", minLife = 1250, maxLife = 2500, name = "Zipped Jill", txtData = "Hash = 1277537940\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = SUPER MODE; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm83\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm83\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1277537940\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2107236408\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"-0.0835819989\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"SUPER MODE\" value=\"false\"/>" });
                 enemyList.Add(new Enemy { gameID = "uEm84", minLife = 500, maxLife = 750, name = "Unzipped Jill", txtData = "Hash = 1380006711\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm84\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm84\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1380006711\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-3.1226270199\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>" });
 
+                //Adds selected option.
                 spoilerLog += "All enemies\r\n";
                 }
             else
                 {
+                //Adds selected option.
                 spoilerLog += "Only safe enemies\r\n";
                 }
 
@@ -250,6 +284,7 @@ namespace re5_randomizer_gui
             //Loop for handling unpacking of all ARC files.
             foreach (var file in listOfFiles)
                 {
+                //Calls ARCOperations on the current file appended with .arc to decompress each level's file.
                 string currentFile = file + ".arc";
                 ARCOperations(pathToFiles, currentFile, startInfo, process);
                 }
@@ -257,6 +292,7 @@ namespace re5_randomizer_gui
             //String array of all the folders unpacked from ARC files.
             string[] files = Directory.GetFiles(pathToFiles, ".", SearchOption.AllDirectories);
 
+            //Adds header for what each level has been randomized to contain.
             spoilerLog += "\r\nLevel Randomization\r\n\r\n";
 
             //Main file loop, goes over each file in all of the ARC folders.
@@ -265,6 +301,7 @@ namespace re5_randomizer_gui
                 //Check to ensure file is an enemy spawner file.
                 if (file.Contains("_em"))
                     {
+                    //Check to only use files inside the "soft" folder, which contains the enemy files.
                     if (Path.GetDirectoryName(file).Contains("soft"))
                         {
                         //Check to ensure file is the XML file of the enemy spawner pair.
@@ -310,6 +347,7 @@ namespace re5_randomizer_gui
                                 //Integer for the position of the start of the enemy data.
                                 int enemyStartIndex = fileContent.IndexOf(enemyStart);
 
+                                //Adds consistent start data to the new TXT file.
                                 txtNewFile += txtStart;
                                 txtNewFile += txtEnemies;
 
@@ -360,6 +398,7 @@ namespace re5_randomizer_gui
                                 //Check whether the XML file contains multiple enemy spawns.
                                 else if (enemyCount.Count > 1)
                                     {
+                                    //Begins each level's line of spoiler log.
                                     spoilerLog += exemptName + " - ";
 
                                     //Adjust the index for more than 1 enemy. 
@@ -477,10 +516,12 @@ namespace re5_randomizer_gui
                                             {
                                             if (enemyOccurrences[i] > 0)
                                                 {
+                                                //Adds all enemies and their quantity after the level name.
                                                 spoilerLog += enemyOccurrences[i] + " " + newEnemies[i].name + ", ";
                                                 }
                                             }
 
+                                        //Adds new line to spoiler log.
                                         spoilerLog += "\r\n";
 
                                         }
@@ -508,6 +549,7 @@ namespace re5_randomizer_gui
 
                                             }
 
+                                        //Adds the selected enemy and its quantity.
                                         spoilerLog += enemyCount.Count + " " + currentEnemy.name;
                                         spoilerLog += "\r\n";
 
@@ -579,16 +621,21 @@ namespace re5_randomizer_gui
             //Loop for handling unpacking of all ARC files.
             foreach (var file in listOfFiles)
                 {
+                //Calls ARCOperations to compress each level's folder back into a game-readable file.
                 ARCOperations(pathToFiles, file, startInfo, process);
                 }
 
+            //String containing the path to the folder the program is in, along with the file name for the spoiler log.
             string spoilerLogLocation = Environment.CurrentDirectory + "\\" + "Spoiler Log " + DateTime.Now.ToString("M/d/yyyy HH-mm-ss") + ".txt";
 
+            //Writes the spoiler log to a file at the location.
             File.WriteAllText(spoilerLogLocation, spoilerLog);
 
+            //Strings to be used in the message box that appears upon successful randomization.
             string boxMessage = "Randomization complete!";
             string boxTitle = "Resident Evil 5 Randomizer";
 
+            //Shows the message box.
             MessageBox.Show(boxMessage, boxTitle);
             }
         }
