@@ -48,6 +48,12 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.randomizeEnemiesCheckBox = new System.Windows.Forms.CheckBox();
+            this.randomizeItemCheckBox = new System.Windows.Forms.CheckBox();
+            this.keyItemCheckBox = new System.Windows.Forms.CheckBox();
+            this.treasureItemCheckBox = new System.Windows.Forms.CheckBox();
+            this.unsafeItemCheckBox = new System.Windows.Forms.CheckBox();
+            this.randomizeQuantityCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -70,6 +76,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(12, 38);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -110,7 +117,7 @@
             // buttonRandomize
             // 
             this.buttonRandomize.Enabled = false;
-            this.buttonRandomize.Location = new System.Drawing.Point(269, 206);
+            this.buttonRandomize.Location = new System.Drawing.Point(262, 374);
             this.buttonRandomize.Name = "buttonRandomize";
             this.buttonRandomize.Size = new System.Drawing.Size(75, 23);
             this.buttonRandomize.TabIndex = 5;
@@ -132,7 +139,7 @@
             // 
             // labelEnemyVariety
             // 
-            this.labelEnemyVariety.Location = new System.Drawing.Point(13, 99);
+            this.labelEnemyVariety.Location = new System.Drawing.Point(12, 132);
             this.labelEnemyVariety.Name = "labelEnemyVariety";
             this.labelEnemyVariety.Size = new System.Drawing.Size(91, 13);
             this.labelEnemyVariety.TabIndex = 0;
@@ -153,7 +160,8 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Location = new System.Drawing.Point(16, 115);
+            this.groupBox1.Enabled = false;
+            this.groupBox1.Location = new System.Drawing.Point(15, 148);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(184, 76);
             this.groupBox1.TabIndex = 8;
@@ -162,7 +170,7 @@
             // labelMapSelection
             // 
             this.labelMapSelection.AutoSize = true;
-            this.labelMapSelection.Location = new System.Drawing.Point(203, 99);
+            this.labelMapSelection.Location = new System.Drawing.Point(203, 132);
             this.labelMapSelection.Name = "labelMapSelection";
             this.labelMapSelection.Size = new System.Drawing.Size(112, 13);
             this.labelMapSelection.TabIndex = 9;
@@ -172,7 +180,8 @@
             // 
             this.groupBox2.Controls.Add(this.radioButton4);
             this.groupBox2.Controls.Add(this.radioButton3);
-            this.groupBox2.Location = new System.Drawing.Point(206, 115);
+            this.groupBox2.Enabled = false;
+            this.groupBox2.Location = new System.Drawing.Point(206, 148);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(184, 76);
             this.groupBox2.TabIndex = 10;
@@ -204,7 +213,7 @@
             // labelEnemySelection
             // 
             this.labelEnemySelection.AutoSize = true;
-            this.labelEnemySelection.Location = new System.Drawing.Point(393, 99);
+            this.labelEnemySelection.Location = new System.Drawing.Point(394, 132);
             this.labelEnemySelection.Name = "labelEnemySelection";
             this.labelEnemySelection.Size = new System.Drawing.Size(98, 13);
             this.labelEnemySelection.TabIndex = 11;
@@ -214,7 +223,8 @@
             // 
             this.groupBox3.Controls.Add(this.radioButton6);
             this.groupBox3.Controls.Add(this.radioButton5);
-            this.groupBox3.Location = new System.Drawing.Point(396, 115);
+            this.groupBox3.Enabled = false;
+            this.groupBox3.Location = new System.Drawing.Point(397, 148);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(184, 76);
             this.groupBox3.TabIndex = 12;
@@ -243,11 +253,85 @@
             this.radioButton5.Text = "Only safe enemies";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
+            // randomizeEnemiesCheckBox
+            // 
+            this.randomizeEnemiesCheckBox.AutoSize = true;
+            this.randomizeEnemiesCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.randomizeEnemiesCheckBox.Location = new System.Drawing.Point(11, 105);
+            this.randomizeEnemiesCheckBox.Name = "randomizeEnemiesCheckBox";
+            this.randomizeEnemiesCheckBox.Size = new System.Drawing.Size(128, 17);
+            this.randomizeEnemiesCheckBox.TabIndex = 13;
+            this.randomizeEnemiesCheckBox.Text = "Randomize Enemies?";
+            this.randomizeEnemiesCheckBox.UseVisualStyleBackColor = true;
+            this.randomizeEnemiesCheckBox.CheckedChanged += new System.EventHandler(this.randomizeEnemiesCheckBox_CheckedChanged);
+            // 
+            // randomizeItemCheckBox
+            // 
+            this.randomizeItemCheckBox.AutoSize = true;
+            this.randomizeItemCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.randomizeItemCheckBox.Location = new System.Drawing.Point(11, 242);
+            this.randomizeItemCheckBox.Name = "randomizeItemCheckBox";
+            this.randomizeItemCheckBox.Size = new System.Drawing.Size(113, 17);
+            this.randomizeItemCheckBox.TabIndex = 14;
+            this.randomizeItemCheckBox.Text = "Randomize Items?";
+            this.randomizeItemCheckBox.UseVisualStyleBackColor = true;
+            this.randomizeItemCheckBox.CheckedChanged += new System.EventHandler(this.randomizeItemCheckBox_CheckedChanged);
+            // 
+            // keyItemCheckBox
+            // 
+            this.keyItemCheckBox.AutoSize = true;
+            this.keyItemCheckBox.Enabled = false;
+            this.keyItemCheckBox.Location = new System.Drawing.Point(34, 275);
+            this.keyItemCheckBox.Name = "keyItemCheckBox";
+            this.keyItemCheckBox.Size = new System.Drawing.Size(110, 17);
+            this.keyItemCheckBox.TabIndex = 15;
+            this.keyItemCheckBox.Text = "Include Key Items";
+            this.keyItemCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // treasureItemCheckBox
+            // 
+            this.treasureItemCheckBox.AutoSize = true;
+            this.treasureItemCheckBox.Enabled = false;
+            this.treasureItemCheckBox.Location = new System.Drawing.Point(34, 299);
+            this.treasureItemCheckBox.Name = "treasureItemCheckBox";
+            this.treasureItemCheckBox.Size = new System.Drawing.Size(111, 17);
+            this.treasureItemCheckBox.TabIndex = 16;
+            this.treasureItemCheckBox.Text = "Include Treasures";
+            this.treasureItemCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // unsafeItemCheckBox
+            // 
+            this.unsafeItemCheckBox.AutoSize = true;
+            this.unsafeItemCheckBox.Enabled = false;
+            this.unsafeItemCheckBox.Location = new System.Drawing.Point(34, 323);
+            this.unsafeItemCheckBox.Name = "unsafeItemCheckBox";
+            this.unsafeItemCheckBox.Size = new System.Drawing.Size(126, 17);
+            this.unsafeItemCheckBox.TabIndex = 17;
+            this.unsafeItemCheckBox.Text = "Include Unsafe Items";
+            this.unsafeItemCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // randomizeQuantityCheckBox
+            // 
+            this.randomizeQuantityCheckBox.AutoSize = true;
+            this.randomizeQuantityCheckBox.Location = new System.Drawing.Point(34, 346);
+            this.randomizeQuantityCheckBox.Name = "randomizeQuantityCheckBox";
+            this.randomizeQuantityCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.randomizeQuantityCheckBox.TabIndex = 18;
+            this.randomizeQuantityCheckBox.Text = "Randomize Quantity";
+            this.randomizeQuantityCheckBox.UseVisualStyleBackColor = true;
+            this.randomizeQuantityCheckBox.Visible = false;
+            // 
             // Randomizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 241);
+            this.ClientSize = new System.Drawing.Size(597, 413);
+            this.Controls.Add(this.randomizeQuantityCheckBox);
+            this.Controls.Add(this.unsafeItemCheckBox);
+            this.Controls.Add(this.treasureItemCheckBox);
+            this.Controls.Add(this.keyItemCheckBox);
+            this.Controls.Add(this.randomizeItemCheckBox);
+            this.Controls.Add(this.randomizeEnemiesCheckBox);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.labelEnemySelection);
             this.Controls.Add(this.groupBox2);
@@ -296,6 +380,12 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.CheckBox randomizeEnemiesCheckBox;
+        private System.Windows.Forms.CheckBox randomizeItemCheckBox;
+        private System.Windows.Forms.CheckBox keyItemCheckBox;
+        private System.Windows.Forms.CheckBox treasureItemCheckBox;
+        private System.Windows.Forms.CheckBox unsafeItemCheckBox;
+        private System.Windows.Forms.CheckBox randomizeQuantityCheckBox;
         }
     }
 

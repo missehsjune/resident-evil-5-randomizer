@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace re5_randomizer_gui
     {
@@ -49,6 +50,20 @@ namespace re5_randomizer_gui
                 }
             }
 
+        private void randomizeEnemiesCheckBox_CheckedChanged(object sender, EventArgs e)
+            {
+            groupBox1.Enabled = !groupBox1.Enabled;
+            groupBox2.Enabled = !groupBox2.Enabled;
+            groupBox3.Enabled = !groupBox3.Enabled;
+            }
+
+        private void randomizeItemCheckBox_CheckedChanged(object sender, EventArgs e)
+            {
+            treasureItemCheckBox.Enabled = !treasureItemCheckBox.Enabled;
+            unsafeItemCheckBox.Enabled = !unsafeItemCheckBox.Enabled;
+            keyItemCheckBox.Enabled = !keyItemCheckBox.Enabled;
+            }
+
         private void buttonRandomize_Click(object sender, EventArgs e)
             {
             this.buttonRandomize.Enabled = false;
@@ -71,8 +86,8 @@ namespace re5_randomizer_gui
             startInfo.FileName = "ARCtool.exe";
             startInfo.Arguments = file + " -alwayscomp -xfs -re5 -texRE5 -v 7 -pc";
             process.StartInfo = startInfo;
-            Process.Start(startInfo);
-            Thread.Sleep(10);
+            process.Start();
+            process.WaitForExit();
             }
 
         /// <summary>
@@ -124,13 +139,14 @@ namespace re5_randomizer_gui
             int randomSeed = Convert.ToInt32(this.numericUpDown1.Value);
             Random enemyRandom = new Random(randomSeed);
             Random lifeRandom = new Random(randomSeed);
+            Random itemRandom = new Random(randomSeed);
 
             //Adding the chosen seed number to spoiler log.
             spoilerLog += "Seed number: " + randomSeed + "\r\n\r\n";
 
             //List of all ARC files/folders to check for XML files, as well as for unpacking and repacking ARC files.
-            string[] listOfFiles = { "s100", "s102", "s104", "s105", "s106", "s107", "s108", "s113", "s114", "s115", "s116", "s117", "s118", "s119", "s200", "s201", "s202", "s203", "s204", "s207", "s209", "s300", "s301", "s302", "s303", "s305", "s307", "s310", "s311", "s313", "s314", "s315", "s316", "s500", "s501", "s504", "s505" };
-            List<string> exemptFiles = new List<string> { "s104_em03.lot.xml", "s108_em00.lot.xml", "s114_em00.lot.xml", "s114_em13.lot.xml", "s104_em00.lot.xml", "s307_em05.lot.xml", "s314_em05.lot.xml", "s314_em06.lot.xml", "s505_em08.lot.xml" };
+            string[] listOfFiles = { "s100", "s102", "s103", "s104", "s105", "s106", "s107", "s108", "s113", "s114", "s115", "s116", "s117", "s118", "s119", "s200", "s201", "s202", "s203", "s204", "s205", "s207", "s209", "s300", "s301", "s302", "s303", "s304", "s305", "s307", "s308", "s309", "s310", "s311", "s312", "s313", "s314", "s315", "s316", "s500", "s501", "s503", "s504", "s505" };
+            List<string> exemptFiles = new List<string> { "s103_em00.lot.xml", "s104_em00.lot.xml", "s104_em03.lot.xml", "s108_em00.lot.xml", "s113_em03.lot.xml", "s114_em00.lot.xml", "s114_em13.lot.xml", "s205_em00.lot.xml", "s304_Em00.lot.xml", "s307_em05.lot.xml", "s308_em00.lot.xml", "s309_em00.lot.xml", "s309_em01.lot.xml", "s309_em02.lot.xml", "s314_em05.lot.xml", "s314_em06.lot.xml", "s505_em08.lot.xml" };
 
             //Adds a section for the options the user has selected.
             spoilerLog += "Selected options: \r\n";
@@ -183,7 +199,6 @@ namespace re5_randomizer_gui
                 new Enemy { gameID = "uEm20", minLife = 4000, maxLife = 7000, name = "Executioner Majini", txtData = "Hash = 211737020\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEnemy\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm20\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"211737020\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"1020\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-1.6847670078\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>" },
                 new Enemy { gameID = "uEm21", minLife = 750, maxLife = 1000, name = "Agitator Majini", txtData = "Hash = 82723943\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mbArmed; Type = bool; unknown = 0; Size = 1\r\nName = mArmNum; Type = s32; unknown = 0; Size = 4\r\nName = mArmId; Type = s32; unknown = 0; Size = 4\r\nName = mArmSetJoint; Type = u32; unknown = 0; Size = 4\r\nName = mIsExtra; Type = bool; unknown = 0; Size = 1\r\nName = mExtraNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsActing; Type = bool; unknown = 0; Size = 1\r\nName = mAttribute; Type = u32; unknown = 0; Size = 4\r\nName = mPlagaType; Type = u32; unknown = 0; Size = 4\r\nName = mSubBomb; Type = u32; unknown = 0; Size = 4\r\nName = mAttackType; Type = u32; unknown = 0; Size = 4\r\nName = mMaskType; Type = s32; unknown = 0; Size = 4\r\nName = mbLefty; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckEvent; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckLimitY; Type = f32; unknown = 128; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm10\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm21\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"82723943\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"142997\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0199240446\" y=\"1.0199240446\" z=\"1.0199240446\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbArmed\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mArmNum\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mArmId\" value=\"459125\"/>\r\n\t\t\t\t<u32 name=\"mArmSetJoint\" value=\"1\"/>\r\n\t\t\t\t<bool name=\"mIsExtra\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mExtraNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsActing\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mAttribute\" value=\"2304\"/>\r\n\t\t\t\t<u32 name=\"mPlagaType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSubBomb\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAttackType\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mMaskType\" value=\"-1\"/>\r\n\t\t\t\t<bool name=\"mbLefty\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbNeckEvent\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mbNeckLimitY\" value=\"90.0000076294\"/>" },
                 new Enemy { gameID = "uEm22", minLife = 5000, maxLife = 7500, name = "Chainsaw Majini", txtData = "Hash = 1103984264\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mDieLieTime; Type = f32; unknown = 0; Size = 4\r\nName = mRanbuSetLife; Type = s16; unknown = 0; Size = 2\r\nName = mIsKeySet; Type = bool; unknown = 0; Size = 1\r\nName = mForceSuper; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm22\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm22\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1103984264\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"4592464\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-1.5578290224\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"1\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mDieLieTime\" value=\"8.0000000000\"/>\r\n\t\t\t\t<s16 name=\"mRanbuSetLife\" value=\"1000\"/>\r\n\t\t\t\t<bool name=\"mIsKeySet\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mForceSuper\" value=\"false\"/>" },
-                new Enemy { gameID = "uEm23", minLife = 5000, maxLife = 8000, name = "Gatling Gun Majini", txtData = "Hash = 82723943\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mbArmed; Type = bool; unknown = 0; Size = 1\r\nName = mArmNum; Type = s32; unknown = 0; Size = 4\r\nName = mArmId; Type = s32; unknown = 0; Size = 4\r\nName = mArmSetJoint; Type = u32; unknown = 0; Size = 4\r\nName = mIsExtra; Type = bool; unknown = 0; Size = 1\r\nName = mExtraNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsActing; Type = bool; unknown = 0; Size = 1\r\nName = mAttribute; Type = u32; unknown = 0; Size = 4\r\nName = mPlagaType; Type = u32; unknown = 0; Size = 4\r\nName = mSubBomb; Type = u32; unknown = 0; Size = 4\r\nName = mAttackType; Type = u32; unknown = 0; Size = 4\r\nName = mMaskType; Type = s32; unknown = 0; Size = 4\r\nName = mbLefty; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckEvent; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckLimitY; Type = f32; unknown = 128; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm10\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm23\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"82723943\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2108220572\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-2.6878070831\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0471249819\" y=\"1.0471249819\" z=\"1.0471249819\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"4\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"3.1415929794\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbArmed\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mArmNum\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mArmId\" value=\"459101\"/>\r\n\t\t\t\t<u32 name=\"mArmSetJoint\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsExtra\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mExtraNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsActing\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mAttribute\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mPlagaType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSubBomb\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAttackType\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mMaskType\" value=\"-1\"/>\r\n\t\t\t\t<bool name=\"mbLefty\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbNeckEvent\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mbNeckLimitY\" value=\"90.0000076294\"/>" },
                 new Enemy { gameID = "uEm24", minLife = 3000, maxLife = 5000, name = "Giant Majini", txtData = "Hash = 82723943\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mbArmed; Type = bool; unknown = 0; Size = 1\r\nName = mArmNum; Type = s32; unknown = 0; Size = 4\r\nName = mArmId; Type = s32; unknown = 0; Size = 4\r\nName = mArmSetJoint; Type = u32; unknown = 0; Size = 4\r\nName = mIsExtra; Type = bool; unknown = 0; Size = 1\r\nName = mExtraNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsActing; Type = bool; unknown = 0; Size = 1\r\nName = mAttribute; Type = u32; unknown = 0; Size = 4\r\nName = mPlagaType; Type = u32; unknown = 0; Size = 4\r\nName = mSubBomb; Type = u32; unknown = 0; Size = 4\r\nName = mAttackType; Type = u32; unknown = 0; Size = 4\r\nName = mMaskType; Type = s32; unknown = 0; Size = 4\r\nName = mbLefty; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckEvent; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckLimitY; Type = f32; unknown = 128; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm10\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm24\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"82723943\">\r\n\t\t\t\t<string name=\"mName\" value=\"s\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"2.9474480152\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0720000267\" y=\"1.0720000267\" z=\"1.0720000267\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"4294967295\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"5000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbArmed\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mArmNum\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mArmId\" value=\"459108\"/>\r\n\t\t\t\t<u32 name=\"mArmSetJoint\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsExtra\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mExtraNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsActing\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mAttribute\" value=\"67108864\"/>\r\n\t\t\t\t<u32 name=\"mPlagaType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSubBomb\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAttackType\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mMaskType\" value=\"-1\"/>\r\n\t\t\t\t<bool name=\"mbLefty\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mbNeckEvent\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mbNeckLimitY\" value=\"90.0000076294\"/>" },
                 new Enemy { gameID = "uEm30", minLife = 400, maxLife = 900, name = "Dog", txtData = "Hash = 920135397\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = Size Variation; Type = u32; unknown = 0; Size = 4\r\nName = Plaga Enable; Type = bool; unknown = 0; Size = 1\r\nName = Default Plaga; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm30\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm30\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"920135397\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"1.5333410501\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"2\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"-0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"Size Variation\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"Plaga Enable\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"Default Plaga\" value=\"false\"/>" },
                 new Enemy { gameID = "uEm31", minLife = 600, maxLife = 900, name = "Other Dog", txtData = "Hash = 1105139315\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = Size Variation; Type = u32; unknown = 0; Size = 4\r\nName = Plaga Enable; Type = bool; unknown = 0; Size = 1\r\nName = Default Plaga; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm31\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm31\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1105139315\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"16777216\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-2.5005779266\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"Size Variation\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"Plaga Enable\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"Default Plaga\" value=\"false\"/>" },
@@ -198,10 +213,11 @@ namespace re5_randomizer_gui
 
             if (this.radioButton6.Checked)
                 {
+                enemyList.Add(new Enemy { gameID = "uEm23", minLife = 5000, maxLife = 8000, name = "Gatling Gun Majini", txtData = "Hash = 82723943\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mbArmed; Type = bool; unknown = 0; Size = 1\r\nName = mArmNum; Type = s32; unknown = 0; Size = 4\r\nName = mArmId; Type = s32; unknown = 0; Size = 4\r\nName = mArmSetJoint; Type = u32; unknown = 0; Size = 4\r\nName = mIsExtra; Type = bool; unknown = 0; Size = 1\r\nName = mExtraNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsActing; Type = bool; unknown = 0; Size = 1\r\nName = mAttribute; Type = u32; unknown = 0; Size = 4\r\nName = mPlagaType; Type = u32; unknown = 0; Size = 4\r\nName = mSubBomb; Type = u32; unknown = 0; Size = 4\r\nName = mAttackType; Type = u32; unknown = 0; Size = 4\r\nName = mMaskType; Type = s32; unknown = 0; Size = 4\r\nName = mbLefty; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckEvent; Type = bool; unknown = 0; Size = 1\r\nName = mbNeckLimitY; Type = f32; unknown = 128; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm10\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm23\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"82723943\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2108220572\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-2.6878070831\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0471249819\" y=\"1.0471249819\" z=\"1.0471249819\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"4\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"3.1415929794\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbArmed\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mArmNum\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mArmId\" value=\"459101\"/>\r\n\t\t\t\t<u32 name=\"mArmSetJoint\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsExtra\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mExtraNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsActing\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mAttribute\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mPlagaType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSubBomb\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAttackType\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mMaskType\" value=\"-1\"/>\r\n\t\t\t\t<bool name=\"mbLefty\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbNeckEvent\" value=\"false\"/>\r\n\t\t\t\t<f32 name=\"mbNeckLimitY\" value=\"90.0000076294\"/>" });
                 enemyList.Add(new Enemy { gameID = "uEm40", minLife = 2500, maxLife = 5000, name = "Ouroboros", txtData = "Hash = 2040115234\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = HEAD_LIFE; Type = s16; unknown = 0; Size = 2\r\nName = ARM_L_LIFE; Type = s16; unknown = 0; Size = 2\r\nName = ARM_R_LIFE; Type = s16; unknown = 0; Size = 2\r\nName = KILL_USE_ACT_RANK_UNDER; Type = u8; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm40\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm40\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"2040115234\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"0.0558799990\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<s16 name=\"HEAD_LIFE\" value=\"175\"/>\r\n\t\t\t\t<s16 name=\"ARM_L_LIFE\" value=\"220\"/>\r\n\t\t\t\t<s16 name=\"ARM_R_LIFE\" value=\"220\"/>\r\n\t\t\t\t<u8 name=\"KILL_USE_ACT_RANK_UNDER\" value=\"3\"/>" });
-                enemyList.Add(new Enemy { gameID = "uEm41", minLife = 5000, maxLife = 7500, name = "Ouroboros Mkono", txtData = "Hash = 211737020\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEnemy\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm41\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"211737020\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"1063835018\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"1.4285769463\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>" });
-                enemyList.Add(new Enemy { gameID = "uEm42", minLife = 100, maxLife = 250, name = "Ouroboros Aheri", txtData = "Hash = 211737020\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEnemy\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm42\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"211737020\">\r\n\t\t\t\t<string name=\"mName\" value=\"Uro3_Battle\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"13133488\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>" });
-                enemyList.Add(new Enemy { gameID = "uEm45", minLife = 2500, maxLife = 4000, name = "Ndesu", txtData = "Hash = 166937773\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mLife; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm45\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm45\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"166937773\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-842150451\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"4423.9809570313\" y=\"0.0000000000\" z=\"-5292.7216796875\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"-1.0318479538\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"15000\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t</classref>\r\n\t\t</classref>" });
+                enemyList.Add(new Enemy { gameID = "uEm41", minLife = 5000, maxLife = 7500, name = "Ouroboros Mkono", txtData = "Hash = 211737020\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEnemy\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm41\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"211737020\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"1063835018\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"1.4285769463\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>"
+                    });
+                enemyList.Add(new Enemy { gameID = "uEm45", minLife = 2500, maxLife = 4000, name = "Ndesu", txtData = "Hash = 166937773\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mLife; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm45\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm45\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"166937773\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-842150451\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"4423.9809570313\" y=\"0.0000000000\" z=\"-5292.7216796875\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"-1.0318479538\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"15000\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>" });
                 enemyList.Add(new Enemy { gameID = "uEm60", minLife = 100, maxLife = 200, name = "Goat", txtData = "Hash = 211737020\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEnemy\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm60\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"211737020\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"1869426994\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.5395129919\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t</classref>\r\n\t\t</classref>" });
                 enemyList.Add(new Enemy { gameID = "uEm61", minLife = 100, maxLife = 200, name = "Raven", txtData = "Hash = 1017700918\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = mDefSpeed; Type = vector3; unknown = 0; Size = 16\r\nName = mAddSpeed; Type = vector3; unknown = 0; Size = 16\r\nName = mMaxSpeed; Type = vector3; unknown = 0; Size = 16\r\nName = mMinSpeed; Type = vector3; unknown = 0; Size = 16\r\nName = mMovaLength; Type = f32; unknown = 0; Size = 4\r\nName = mMovaHeight; Type = f32; unknown = 0; Size = 4\r\nName = mSearchShotCircle; Type = f32; unknown = 0; Size = 4\r\nName = mHomingAccuracy; Type = f32; unknown = 0; Size = 4\r\nName = mAddGoUp; Type = f32; unknown = 0; Size = 4\r\nName = mNotAdj; Type = bool; unknown = 0; Size = 1\r\nName = mItemSwitch; Type = u8; unknown = 0; Size = 1\r\nName = mTakeOffMot; Type = u8; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm61\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm61\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1017700918\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"1551053104\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"-1.6320619583\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"0.8000000119\" y=\"0.8000000119\" z=\"0.8000000119\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"350.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"350.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"1500.0000000000\" z=\"12000.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"-0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"false\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"true\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mDefSpeed\" x=\"0.0000000000\" y=\"6.0000000000\" z=\"12.5000000000\"/>\r\n\t\t\t\t<vector3 name=\"mAddSpeed\" x=\"0.0000000000\" y=\"0.1500000060\" z=\"0.2500000000\"/>\r\n\t\t\t\t<vector3 name=\"mMaxSpeed\" x=\"0.0000000000\" y=\"6.0000000000\" z=\"20.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mMinSpeed\" x=\"0.0000000000\" y=\"-6.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mMovaLength\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mMovaHeight\" value=\"200.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchShotCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mHomingAccuracy\" value=\"0.0750000030\"/>\r\n\t\t\t\t<f32 name=\"mAddGoUp\" value=\"2.0000000000\"/>\r\n\t\t\t\t<bool name=\"mNotAdj\" value=\"true\"/>\r\n\t\t\t\t<u8 name=\"mItemSwitch\" value=\"0\"/>\r\n\t\t\t\t<u8 name=\"mTakeOffMot\" value=\"2\"/>\r\n\t\t\t</classref>\r\n\t\t</classref>" });
                 enemyList.Add(new Enemy { gameID = "uEm62", minLife = 100, maxLife = 200, name = "Chicken", txtData = "Hash = 631354252\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = Egg Enable; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm62\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm62\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"631354252\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"250.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"Egg Enable\" value=\"true\"/>\r\n\t\t\t</classref>\r\n\t\t</classref>" });
@@ -273,6 +289,11 @@ namespace re5_randomizer_gui
                     { "s506", 2.0M },
                     { "s508", 2.0M }
                 };
+            
+            //For storing item names and their respective IDs.
+            Dictionary<string, string> itemList = new Dictionary<string, string>();
+
+            string newItemFile = "";
 
             //Ask user for location of game files and ARCTool.
             string pathToFiles = this.folderBrowserDialog1.SelectedPath;
@@ -280,6 +301,200 @@ namespace re5_randomizer_gui
             //Creation of process for unpacking and repacking ARC files.
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+
+            //Checks for which item checkboxes have been selected, and adds the respective items to the dictionary.
+            if(randomizeItemCheckBox.Checked)
+                {
+                itemList.Add("M92F", "258");
+                itemList.Add("VZ61", "259");
+                itemList.Add("Ithaca M37", "260");
+                itemList.Add("S75", "261");
+                itemList.Add("Hand Grenade", "262");
+                itemList.Add("Incendiary Grenade", "263");
+                itemList.Add("Flash Grenade", "264");
+                itemList.Add("SIG 556", "265");
+                itemList.Add("Proximity Mines", "266");
+                itemList.Add("S&W M29", "267");
+                itemList.Add("Grenade Launcher", "268");
+                itemList.Add("Rocket Launcher", "269");
+                itemList.Add("H&K P8", "272");
+                itemList.Add("SIG P226", "273");
+                itemList.Add("H&K MP5", "275");
+                itemList.Add("M3", "278");
+                itemList.Add("Jail Breaker", "279");
+                itemList.Add("Hydra", "281");
+                itemList.Add("L. Hawk", "282");
+                itemList.Add("S&W M5000", "283");
+                itemList.Add("H&K PSG-1", "284");
+                itemList.Add("AK-74", "285");
+                itemList.Add("M93R", "286");
+                itemList.Add("Px4", "287");
+                itemList.Add("Dragunov SVD", "288");
+                itemList.Add("Stun Rod 1", "290");
+                itemList.Add("G. Launcher (EXP)", "293");
+                itemList.Add("G. Launcher (ACD)", "294");
+                itemList.Add("G. Launcher (ICE)", "295");
+                itemList.Add("Samurai Edge", "297");
+                itemList.Add("Egg (Rotten)", "310");
+                itemList.Add("G. Launcher (FLM)", "313");
+                itemList.Add("G. Launcher (FLS)", "314");
+                itemList.Add("G. Launcher (ELC)", "315");
+                itemList.Add("Egg (White)", "316");
+                itemList.Add("Egg (Brown)", "317");
+                itemList.Add("Egg (Gold)", "318");
+                itemList.Add("Handgun Ammo", "513");
+                itemList.Add("Machine Gun Ammo", "514");
+                itemList.Add("Shotgun Ammo", "515");
+                itemList.Add("Rifle Ammo", "516");
+                itemList.Add("Explosive Rounds", "518");
+                itemList.Add("Acid Rounds", "519");
+                itemList.Add("Nitrogen Rounds", "520");
+                itemList.Add("Magnum Ammo", "521");
+                itemList.Add("Flame Rounds", "526");
+                itemList.Add("Flash Rounds", "527");
+                itemList.Add("Electric Rounds", "528");
+                itemList.Add("Herb (Green Plant)", "769");
+                itemList.Add("First Aid Spray", "772");
+                itemList.Add("Herb (Green)", "773");
+                itemList.Add("Herb (Red)", "774");
+                itemList.Add("Herb (G+G)", "775");
+                itemList.Add("Herb (G+R)", "777");
+                if (keyItemCheckBox.Checked)
+                    {
+                    itemList.Add("Furnace Key", "1283");
+                    itemList.Add("Execution Ground Key", "1285");
+                    itemList.Add("Port Key", "1286");
+                    itemList.Add("Hangar Keycard A", "1287");
+                    itemList.Add("Hangar Keycard B", "1288");
+                    itemList.Add("Old Building Key", "1289");
+                    itemList.Add("Tanker Keycard A", "1290");
+                    itemList.Add("Sky Emblem", "1294");
+                    itemList.Add("Earth Emblem", "1295");
+                    itemList.Add("Sea Emblem", "1296");
+                    itemList.Add("Shaman Slate", "1298");
+                    itemList.Add("Warrior Slate", "1299");
+                    itemList.Add("Beast Slate", "1300");
+                    itemList.Add("Raptor Slate", "1301");
+                    itemList.Add("Crane Keycard", "1302");
+                    itemList.Add("Tanker Keycard B", "1303");
+                    itemList.Add("Guard's Key", "1306");
+                    itemList.Add("Bridge Keycard", "1307");
+                    itemList.Add("Square Crank", "1312");
+                    itemList.Add("Centaur Emblem", "1313");
+                    itemList.Add("Password 1", "1314");
+                    itemList.Add("Password 2", "1315");
+                    itemList.Add("Password 3", "1316");
+                    itemList.Add("Jail Key", "1317");
+                    itemList.Add("Gold Crest", "1318");
+                    itemList.Add("Silver Crest", "1319");
+                    itemList.Add("Heat-Sensitive Paper", "1320");
+                    itemList.Add("Transport Area Key", "1321");
+                    itemList.Add("Emergency Exit Key", "1322");
+                    itemList.Add("Sun Eater Serpent Shard", "1323");
+                    itemList.Add("Dual-Head Serpent Shard", "1324");
+                    itemList.Add("Serpent Tail Shard", "1325");
+                    itemList.Add("Tri-Head Serpent Shard", "1326");
+                    itemList.Add("Crank (Red)", "1327");
+                    itemList.Add("Crank (Blue)", "1328");
+                    itemList.Add("Crank (Violet)", "1329");
+                    itemList.Add("Crank (Green)", "1330");
+                    }
+                if (treasureItemCheckBox.Checked)
+                    {
+                    itemList.Add("Gold (Large)", "1025");
+                    itemList.Add("Gold (Small)", "1026");
+                    itemList.Add("Gold Bars", "1027");
+                    itemList.Add("Sapphire", "1028");
+                    itemList.Add("Gold Ring", "1047");
+                    itemList.Add("Dead Bride's Necklace", "1048");
+                    itemList.Add("Venom Fang", "1049");
+                    itemList.Add("Antique Clock", "1050");
+                    itemList.Add("Chalice (Silver)", "1051");
+                    itemList.Add("Chalice (Gold)", "1052");
+                    itemList.Add("Idol (Silver)", "1053");
+                    itemList.Add("Idol (Gold)", "1054");
+                    itemList.Add("Ceremonial Mask", "1055");
+                    itemList.Add("Ivory Reliief", "1056");
+                    itemList.Add("Beetle (Brown)", "1057");
+                    itemList.Add("Jewel Beetle", "1058");
+                    itemList.Add("Royal Necklace", "1059");
+                    itemList.Add("Jewel Bangle", "1060");
+                    itemList.Add("Beetle (Gold)", "1061");
+                    itemList.Add("Topaz (Pear)", "1104");
+                    itemList.Add("Ruby (Pear)", "1105");
+                    itemList.Add("Sapphire (Pear)", "1106");
+                    itemList.Add("Emerald (Pear)", "1107");
+                    itemList.Add("Diamond (Pear)", "1108");
+                    itemList.Add("Topaz (Square)", "1111");
+                    itemList.Add("Ruby (Square)", "1112");
+                    itemList.Add("Sapphire (Square)", "1113");
+                    itemList.Add("Emerald (Square)", "1114");
+                    itemList.Add("Diamond (Square)", "1115");
+                    itemList.Add("Topaz (Oval)", "1118");
+                    itemList.Add("Ruby (Oval)", "1119");
+                    itemList.Add("Sapphire (Oval)", "1120");
+                    itemList.Add("Emerald (Oval)", "1121");
+                    itemList.Add("Diamond (Oval)", "1122");
+                    itemList.Add("Topaz (Trilliant)", "1125");
+                    itemList.Add("Ruby (Trilliant)", "1126");
+                    itemList.Add("Sapphire (Trilliant)", "1127");
+                    itemList.Add("Emerald (Trilliant)", "1128");
+                    itemList.Add("Diamond (Trilliant)", "1129");
+                    itemList.Add("Power Stone", "1132");
+                    itemList.Add("Lion Heart", "1133");
+                    itemList.Add("Blue Enigma", "1134");
+                    itemList.Add("Soul Gem", "1135");
+                    itemList.Add("Heart of Africa", "1136");
+                    itemList.Add("Topaz (Marquise)", "1139");
+                    itemList.Add("Ruby (Marquise)", "1140");
+                    itemList.Add("Sapphire (Marquise)", "1141");
+                    itemList.Add("Emerald (Marquise)", "1142");
+                    itemList.Add("Diamond (Marquise)", "1143");
+                    itemList.Add("Topaz (Brilliant)", "1146");
+                    itemList.Add("Ruby (Brilliant)", "1147");
+                    itemList.Add("Sapphire (Brilliant)", "1148");
+                    itemList.Add("Emerald (Brilliant)", "1149");
+                    itemList.Add("Diamond (Brilliant)", "1150");
+                    }
+                if (unsafeItemCheckBox.Checked)
+                    {
+                    itemList.Add("Knife 1", "257");
+                    itemList.Add("Knife 2", "270");
+                    itemList.Add("Longbow", "271");
+                    itemList.Add("Gatling Gun 1", "277");
+                    itemList.Add("Flamethrower", "289");
+                    itemList.Add("Knife 3", "291");
+                    itemList.Add("Knife 4", "292");
+                    itemList.Add("Gun Turret", "303");
+                    itemList.Add("Lantern", "304");
+                    itemList.Add("L.T.D", "308");
+                    itemList.Add("Rocket Launcher (NVS)", "309");
+                    itemList.Add("Adze", "336");
+                    itemList.Add("Sickle", "337");
+                    itemList.Add("Bow Gun", "338");
+                    itemList.Add("Shovel", "339");
+                    itemList.Add("Dynamite", "340");
+                    itemList.Add("Machete", "341");
+                    itemList.Add("Giant Ax", "344");
+                    itemList.Add("Steel Pipe", "345");
+                    itemList.Add("Bottle", "346");
+                    itemList.Add("Chainsaw", "347");
+                    itemList.Add("Gatling Gun 2", "349");
+                    itemList.Add("Torch", "350");
+                    itemList.Add("Spear", "351");
+                    itemList.Add("Shield 1", "352");
+                    itemList.Add("Shield 2", "353");
+                    itemList.Add("Bow", "354");
+                    itemList.Add("Shield", "355");
+                    itemList.Add("Morning Star", "356");
+                    itemList.Add("Stun Rod 2", "357");
+                    itemList.Add("Score Star (Small)", "1063");
+                    itemList.Add("Score Star (Medium)", "1064");
+                    itemList.Add("Score Star (Large)", "1065");
+                    itemList.Add("Melee Vest", "1537");
+                    itemList.Add("Bulletproof Vest", "1542");
+                    }
+                }
 
             //Loop for handling unpacking of all ARC files.
             foreach (var file in listOfFiles)
@@ -298,322 +513,502 @@ namespace re5_randomizer_gui
             //Main file loop, goes over each file in all of the ARC folders.
             foreach (var file in files)
                 {
-                //Check to ensure file is an enemy spawner file.
-                if (file.Contains("_em"))
+                //String for adding items to prevent softlocks for certain randomization settings.
+                string softlockFixFileContent = "";
+                if (randomizeEnemiesCheckBox.Checked)
                     {
-                    //Check to only use files inside the "soft" folder, which contains the enemy files.
-                    if (Path.GetDirectoryName(file).Contains("soft"))
+                    //Check to ensure file is an enemy spawner file.
+                    if(file.Contains("_em"))
                         {
-                        //Check to ensure file is the XML file of the enemy spawner pair.
-                        if (file.Contains(".xml") && file.Contains(".lot"))
+                        //Check to only use files inside the "soft" folder, which contains the enemy files.
+                        if (Path.GetDirectoryName(file).Contains("soft"))
                             {
-                            //Current file name for checking if file ought to be skipped.
-                            string exemptName = Path.GetFileName(file);
-                            if (exemptFiles.Any(s => s.Contains(exemptName)))
+                            //Check to ensure file is the XML file of the enemy spawner pair.
+                            if (file.Contains(".xml") && file.Contains(".lot"))
                                 {
-                                }
-                            else
-                                {
-                                //Empty strings to be filled during randomization.
-                                string xmlNewFile = "";
-                                string txtNewFile = "";
-                                string finishedTXT = "";
-
-                                //Integer for the text file's layout of enemy data. Each layer of XML is stored within a STRUCT, with an incrementing number.
-                                int currentStruct = 2;
-
-                                //Stores content of current file in a string.
-                                string fileContent = File.ReadAllText(file);
-                                Thread.Sleep(10);
-
-                                //String for locating required data from loaded file.
-                                string enemyStart = "type=\"1637199632\">";
-
-                                //Integer for keeping track of the end position of a single enemy's data.
-                                int endOfEnemyIndex = 0;
-
-                                //String for consistent information at the start of the TXT file.
-                                string txtStart = "XFS (v1)\r\nversion = 6\r\ntype = 4\r\nint1 = 0\r\nstructCount = ";
-
-                                //String for consistent information if the XML/TXT file pair does not contain enemies.
-                                string txtNoEnemy = "\r\nstartOffset = 96\r\n\r\n[STRUCT0000]\r\nHash = 355479284\r\nName = mQuality; Type = u32; unknown = 145; Size = 4\r\nName = mSetInfos; Type = classref; unknown = 160; Size = 4\r\n";
-
-                                //String for consistent information if the XML/TXT file pair does contain enemies.
-                                string txtEnemies = "\r\nstartOffset = 1356\r\n\r\n[STRUCT0000]\r\nHash = 355479284\r\nName = mQuality; Type = u32; unknown = 145; Size = 4\r\nName = mSetInfos; Type = classref; unknown = 160; Size = 4\r\n\r\n[STRUCT0001]\r\nHash = 1637199632\r\nName = mID; Type = s32; unknown = 0; Size = 4\r\nName = mInfoClass; Type = string; unknown = 0; Size = 4\r\nName = mUnitClass; Type = string; unknown = 0; Size = 4\r\nName = mpInfo; Type = classref; unknown = 4; Size = 4\r\n\r\n";
-
-                                //Collection of all enemies found throughout XML file.
-                                MatchCollection enemyCount = Regex.Matches(fileContent, enemyStart);
-
-                                //Integer for the position of the start of the enemy data.
-                                int enemyStartIndex = fileContent.IndexOf(enemyStart);
-
-                                //Adds consistent start data to the new TXT file.
-                                txtNewFile += txtStart;
-                                txtNewFile += txtEnemies;
-
-                                //Check whether the XML file contains a single enemy spawn.
-                                if (enemyCount.Count == 1)
+                                //Current file name for checking if file ought to be skipped.
+                                string exemptName = Path.GetFileName(file);
+                                if (exemptFiles.Any(s => s.Contains(exemptName)))
                                     {
-                                    spoilerLog += exemptName + " - ";
-                                    Console.WriteLine("File " + file + " reached for single enemy randomization.");
-
-                                    //Adjust the index for a single enemy.
-                                    enemyStartIndex -= 29;
-
-                                    //Adds the consistent start of the XML file to the new file's string.
-                                    xmlNewFile = fileContent.Substring(0, enemyStartIndex - 1) + "\r\n";
-
-                                    //Stores the position of the end of the current enemy's data.
-                                    endOfEnemyIndex = fileContent.IndexOf("</classref>", enemyCount[0].Index) + 25;
-
-                                    //Randomly selected enemy whose info will be used to replace the original enemy.
-                                    Enemy currentEnemy = enemyList[enemyRandom.Next(0, enemyList.Count)];
-                                    string enemyData = currentEnemy.xmlData;
-                                    string newXMLData = enemyData.Insert(11, " name=\"mSetInfos\"");
-
-                                    //The position values.
-
-                                    xmlNewFile += newXMLData;
-                                    xmlNewFile += organizeXML(fileContent, enemyCount[0].Index, exemptName, lifeRandom, currentEnemy, lifeMult);
-
-                                    endOfEnemyIndex += 1;
-
-                                    //Adds the consistent data at the end of the XML file.
-                                    xmlNewFile += fileContent.Substring(endOfEnemyIndex, fileContent.Length - endOfEnemyIndex);
-
-                                    //Loads the randomly selected enemy's TXT file data.
-                                    string newTXTData = currentEnemy.txtData;
-
-                                    txtNewFile += "[STRUCT" + string.Format("{0:0000}", currentStruct) + "]\r\n";
-                                    currentStruct += 1;
-
-                                    txtNewFile += newTXTData;
-
-                                    //Adds finished TXT file, with the total number of present STRUCTs inserted to the structCount at the beginning.
-                                    finishedTXT = txtNewFile.Insert(57, currentStruct.ToString());
-
-                                    spoilerLog += currentEnemy.name;
-                                    spoilerLog += "\r\n";
                                     }
-                                //Check whether the XML file contains multiple enemy spawns.
-                                else if (enemyCount.Count > 1)
+                                else
                                     {
-                                    //Begins each level's line of spoiler log.
-                                    spoilerLog += exemptName + " - ";
+                                    //Empty strings to be filled during randomization.
+                                    string xmlNewFile = "";
+                                    string txtNewFile = "";
+                                    string finishedTXT = "";
 
-                                    //Adjust the index for more than 1 enemy. 
-                                    enemyStartIndex -= 13;
+                                    //Integer for the text file's layout of enemy data. Each layer of XML is stored within a STRUCT, with an incrementing number.
+                                    int currentStruct = 2;
 
-                                    //Adds the consistent start of the XML file to the new file's string.
-                                    xmlNewFile = fileContent.Substring(0, enemyStartIndex - 1) + "\r\n";
+                                    //Stores content of current file in a string.
+                                    string fileContent = File.ReadAllText(file);
 
-                                    if (this.radioButton2.Checked)
+                                    //String for locating required data from loaded file.
+                                    string enemyStart = "type=\"1637199632\">";
+
+                                    //Integer for keeping track of the end position of a single enemy's data.
+                                    int endOfEnemyIndex = 0;
+
+                                    //String for consistent information at the start of the TXT file.
+                                    string txtStart = "XFS (v1)\r\nversion = 6\r\ntype = 4\r\nint1 = 0\r\nstructCount = ";
+
+                                    //String for consistent information if the XML/TXT file pair does not contain enemies.
+                                    string txtNoEnemy = "\r\nstartOffset = 96\r\n\r\n[STRUCT0000]\r\nHash = 355479284\r\nName = mQuality; Type = u32; unknown = 145; Size = 4\r\nName = mSetInfos; Type = classref; unknown = 160; Size = 4\r\n";
+
+                                    //String for consistent information if the XML/TXT file pair does contain enemies.
+                                    string txtEnemies = "\r\nstartOffset = 1356\r\n\r\n[STRUCT0000]\r\nHash = 355479284\r\nName = mQuality; Type = u32; unknown = 145; Size = 4\r\nName = mSetInfos; Type = classref; unknown = 160; Size = 4\r\n\r\n[STRUCT0001]\r\nHash = 1637199632\r\nName = mID; Type = s32; unknown = 0; Size = 4\r\nName = mInfoClass; Type = string; unknown = 0; Size = 4\r\nName = mUnitClass; Type = string; unknown = 0; Size = 4\r\nName = mpInfo; Type = classref; unknown = 4; Size = 4\r\n\r\n";
+
+                                    //Collection of all enemies found throughout XML file.
+                                    MatchCollection enemyCount = Regex.Matches(fileContent, enemyStart);
+
+                                    //Integer for the position of the start of the enemy data.
+                                    int enemyStartIndex = fileContent.IndexOf(enemyStart);
+
+                                    //Adds consistent start data to the new TXT file.
+                                    txtNewFile += txtStart;
+                                    txtNewFile += txtEnemies;
+
+                                    Enemy wesker53 = (Enemy)enemyList.FirstOrDefault(r => r.gameID == "uEm80");
+                                    Enemy wesker63 = (Enemy)enemyList.FirstOrDefault(r => r.gameID == "uEm81");
+                                    Enemy weskerFinal = (Enemy)enemyList.FirstOrDefault(r => r.gameID == "uEm82");
+
+                                    //Check whether the XML file contains a single enemy spawn.
+                                    if (enemyCount.Count == 1)
                                         {
-                                        Console.WriteLine("File " + file + " reached for varied randomization");
 
-                                        //String for finding all unique enemies in spawner file.
-                                        string enemyTypeMatch = "name=\"mUnitClass\" value=\"";
-
-                                        //Collection for finding all unique enemies in spawner file.
-                                        MatchCollection enemyTypes = Regex.Matches(fileContent, enemyTypeMatch);
-
-                                        //List of each unique enemy identifier in spawner file.
-                                        List<string> uniqueEnemyCodes = new List<string>();
-
-                                        //List of each randomly selected enemy for replacement.
-                                        List<Enemy> newEnemies = new List<Enemy>();
-
-                                        //List of the number of occurrences each type of enemy has in spawner file.
-                                        List<int> enemyOccurrences = new List<int>();
-
-                                        //Loops through each of the detected enemy types in spawner file.
-                                        foreach (Match match in enemyTypes)
+                                        if(this.radioButton6.Checked && (file.Contains("s114_em") || file.Contains("s108_em")))
                                             {
-                                            //Integers for finding the enemy code for the current enemy.
-                                            int indexOfEnemyCode = fileContent.IndexOf("name=\"mUnitClass\" value=", match.Index) + 27;
-                                            int indexOfEndEnemyCode = fileContent.IndexOf("/>", indexOfEnemyCode);
-
-                                            //Storing the enemy code of the current enemy.
-                                            string enemyCode = fileContent.Substring(indexOfEnemyCode, indexOfEndEnemyCode - indexOfEnemyCode);
-
-                                            //Adds only unique enemy codes to the list.
-                                            if (!uniqueEnemyCodes.Contains(enemyCode))
-                                                {
-                                                uniqueEnemyCodes.Add(enemyCode);
-                                                }
-
-                                            //Loops through each unique enemy code in the list.
-                                            foreach (string enemy in uniqueEnemyCodes)
-                                                {
-                                                //Adds a new randomly selected enemy to the list of enemies to swap into the game.
-                                                newEnemies.Add(enemyList[enemyRandom.Next(0, enemyList.Count)]);
-
-                                                //Adds a new entry in the list of integers for the current enemy's number of appearances.
-                                                enemyOccurrences.Add(0);
-                                                }
+                                            enemyList.Remove(wesker53);
+                                            enemyList.Remove(wesker63);
+                                            enemyList.Remove(weskerFinal);
                                             }
 
-                                        foreach (Match match in enemyCount)
-                                            {
-                                            //Creation of an empty enemy variable to be filled later. Declared here for access within this scope.
-                                            Enemy currentEnemy = default;
+                                        spoilerLog += exemptName + " - ";
+                                        Console.WriteLine("File " + file + " reached for single enemy randomization.");
 
-                                            //Stores the position of the end of the current enemy's data.
-                                            endOfEnemyIndex = fileContent.IndexOf("</classref>", match.Index) + 25;
+                                        //Adjust the index for a single enemy.
+                                        enemyStartIndex -= 29;
 
-                                            //Integer for recording the index of the current enemy in the list of enemy codes.
-                                            int currentEnemySpot = 0;
+                                        //Adds the consistent start of the XML file to the new file's string.
+                                        xmlNewFile = fileContent.Substring(0, enemyStartIndex - 1) + "\r\n";
 
-                                            //Stores the current enemy's enemy code to compare with the list of unique codes.
-                                            int indexOfGameID = fileContent.IndexOf("name=\"mUnitClass\" value=", match.Index) + 27;
-                                            int indexOfEndGameID = fileContent.IndexOf("/>", indexOfGameID);
-                                            string enemyCode = fileContent.Substring(indexOfGameID, indexOfEndGameID - indexOfGameID);
-
-                                            //Loops as many times as there are unique enemies.
-                                            for (int i = 0; i < uniqueEnemyCodes.Count; i++)
-                                                {
-                                                //Checks whether the current enemy code is present at the index of the loop value within the list of codes.
-                                                if (uniqueEnemyCodes[i] == enemyCode)
-                                                    {
-                                                    //Sets the current enemy for replacement to the enemy in the list at the position of the loop value.
-                                                    currentEnemy = newEnemies[i];
-
-                                                    //Increments the enemyOccurrences value at the position of the loop value for adding to the TXT file later.
-                                                    enemyOccurrences[i]++;
-
-                                                    //Stores the current loop value to be used as an index.
-                                                    currentEnemySpot = i;
-                                                    }
-                                                }
-
-                                            //Stores the currently selected enemy's XML data.
-                                            string newXMLData = currentEnemy!.xmlData;
-
-                                            //Adds current enemy info and old enemy position values to the new file string.
-                                            xmlNewFile += newXMLData;
-                                            xmlNewFile += organizeXML(fileContent, match.Index, exemptName, lifeRandom, currentEnemy, lifeMult);
-
-                                            endOfEnemyIndex += 1;
-
-                                            //Checks if this is the first occurrence of the current match to add that enemy's TXT data to the TXT file.
-                                            if (enemyOccurrences[currentEnemySpot] == 1)
-                                                {
-                                                //Stores the currently selected enemy's TXT data.
-                                                string newTXTData = currentEnemy.txtData;
-
-                                                //Adds the currently numbered STRUCT.
-                                                txtNewFile += "[STRUCT" + string.Format("{0:0000}", currentStruct) + "]\r\n";
-
-                                                //Updates the STRUCT value.
-                                                currentStruct += 1;
-
-                                                //Adds the structured TXT data.
-                                                txtNewFile += newTXTData;
-                                                txtNewFile += "\r\n\r\n";
-                                                }
-                                            }
-                                        for (int i = 0; i < uniqueEnemyCodes.Count; i++)
-                                            {
-                                            if (enemyOccurrences[i] > 0)
-                                                {
-                                                //Adds all enemies and their quantity after the level name.
-                                                spoilerLog += enemyOccurrences[i] + " " + newEnemies[i].name + ", ";
-                                                }
-                                            }
-
-                                        //Adds new line to spoiler log.
-                                        spoilerLog += "\r\n";
-
-                                        }
-                                    else if (this.radioButton1.Checked)
-                                        {
-                                        Console.WriteLine("File " + file + " reached for non-varied multiple randomization.");
+                                        //Stores the position of the end of the current enemy's data.
+                                        endOfEnemyIndex = fileContent.IndexOf("</classref>", enemyCount[0].Index) + 25;
 
                                         //Randomly selected enemy whose info will be used to replace the original enemy.
                                         Enemy currentEnemy = enemyList[enemyRandom.Next(0, enemyList.Count)];
+                                        string enemyData = currentEnemy.xmlData;
+                                        string newXMLData = enemyData.Insert(11, " name=\"mSetInfos\"");
 
-                                        //Loop through each found enemy
-                                        foreach (Match match in enemyCount)
-                                            {
-                                            //Stores the position of the end of the current enemy's data.
-                                            endOfEnemyIndex = fileContent.IndexOf("</classref>", match.Index) + 25;
+                                        //The position values.
 
-                                            //Stores the currently selected enemy's XML data.
-                                            string newXMLData = currentEnemy.xmlData;
+                                        xmlNewFile += newXMLData;
+                                        xmlNewFile += organizeXML(fileContent, enemyCount[0].Index, exemptName, lifeRandom, currentEnemy, lifeMult);
 
-                                            //Adds current enemy info, old enemy position, and randomized life values to the new file string.
-                                            xmlNewFile += newXMLData;
-                                            xmlNewFile += organizeXML(fileContent, match.Index, exemptName, lifeRandom, currentEnemy, lifeMult);
+                                        endOfEnemyIndex += 1;
 
-                                            endOfEnemyIndex += 1;
+                                        //Adds the consistent data at the end of the XML file.
+                                        xmlNewFile += fileContent.Substring(endOfEnemyIndex, fileContent.Length - endOfEnemyIndex);
 
-                                            }
-
-                                        //Adds the selected enemy and its quantity.
-                                        spoilerLog += enemyCount.Count + " " + currentEnemy.name;
-                                        spoilerLog += "\r\n";
-
-                                        //Stores the currently selected enemy's TXT data.
+                                        //Loads the randomly selected enemy's TXT file data.
                                         string newTXTData = currentEnemy.txtData;
 
-                                        //Adds the currently numbered STRUCT.
                                         txtNewFile += "[STRUCT" + string.Format("{0:0000}", currentStruct) + "]\r\n";
-
-                                        //Updates the STRUCT value.
                                         currentStruct += 1;
 
-                                        //Adds the structured TXT data.
                                         txtNewFile += newTXTData;
-                                        txtNewFile += "\r\n\r\n";
+
+                                        //Adds finished TXT file, with the total number of present STRUCTs inserted to the structCount at the beginning.
+                                        finishedTXT = txtNewFile.Insert(57, currentStruct.ToString());
+
+                                        if (this.radioButton6.Checked && (file.Contains("s114_em") || file.Contains("s108_em")))
+                                            {
+                                            enemyList.Add(wesker53);
+                                            enemyList.Add(wesker63);
+                                            enemyList.Add(weskerFinal);
+                                            }
+
+                                        spoilerLog += currentEnemy.name;
+                                        spoilerLog += "\r\n";
+                                        }
+                                    //Check whether the XML file contains multiple enemy spawns.
+                                    else if (enemyCount.Count > 1)
+                                        {
+
+                                        if (this.radioButton6.Checked && (file.Contains("s114_em") || file.Contains("s108_em")))
+                                            {
+                                            enemyList.Remove(wesker53);
+                                            enemyList.Remove(wesker63);
+                                            enemyList.Remove(weskerFinal);
+                                            }
+
+                                        //Begins each level's line of spoiler log.
+                                        spoilerLog += exemptName + " - ";
+
+                                        //Adjust the index for more than 1 enemy. 
+                                        enemyStartIndex -= 13;
+
+                                        //Adds the consistent start of the XML file to the new file's string.
+                                        xmlNewFile = fileContent.Substring(0, enemyStartIndex - 1) + "\r\n";
+
+                                        if (this.radioButton2.Checked)
+                                            {
+                                            Console.WriteLine("File " + file + " reached for varied randomization");
+
+                                            //String for finding all unique enemies in spawner file.
+                                            string enemyTypeMatch = "name=\"mUnitClass\" value=\"";
+
+                                            //Collection for finding all unique enemies in spawner file.
+                                            MatchCollection enemyTypes = Regex.Matches(fileContent, enemyTypeMatch);
+
+                                            //List of each unique enemy identifier in spawner file.
+                                            List<string> uniqueEnemyCodes = new List<string>();
+
+                                            //List of each randomly selected enemy for replacement.
+                                            List<Enemy> newEnemies = new List<Enemy>();
+
+                                            //List of the number of occurrences each type of enemy has in spawner file.
+                                            List<int> enemyOccurrences = new List<int>();
+
+                                            //Loops through each of the detected enemy types in spawner file.
+                                            foreach (Match match in enemyTypes)
+                                                {
+                                                //Integers for finding the enemy code for the current enemy.
+                                                int indexOfEnemyCode = fileContent.IndexOf("name=\"mUnitClass\" value=", match.Index) + 27;
+                                                int indexOfEndEnemyCode = fileContent.IndexOf("/>", indexOfEnemyCode);
+
+                                                //Storing the enemy code of the current enemy.
+                                                string enemyCode = fileContent.Substring(indexOfEnemyCode, indexOfEndEnemyCode - indexOfEnemyCode);
+
+                                                //Adds only unique enemy codes to the list.
+                                                if (!uniqueEnemyCodes.Contains(enemyCode))
+                                                    {
+                                                    uniqueEnemyCodes.Add(enemyCode);
+                                                    }
+
+                                                //Loops through each unique enemy code in the list.
+                                                foreach (string enemy in uniqueEnemyCodes)
+                                                    {
+                                                    //Adds a new randomly selected enemy to the list of enemies to swap into the game.
+                                                    newEnemies.Add(enemyList[enemyRandom.Next(0, enemyList.Count)]);
+
+                                                    //Adds a new entry in the list of integers for the current enemy's number of appearances.
+                                                    enemyOccurrences.Add(0);
+                                                    }
+                                                }
+
+                                            foreach (Match match in enemyCount)
+                                                {
+                                                //Creation of an empty enemy variable to be filled later. Declared here for access within this scope.
+                                                Enemy currentEnemy = default;
+
+                                                //Stores the position of the end of the current enemy's data.
+                                                endOfEnemyIndex = fileContent.IndexOf("</classref>", match.Index) + 25;
+
+                                                //Integer for recording the index of the current enemy in the list of enemy codes.
+                                                int currentEnemySpot = 0;
+
+                                                //Stores the current enemy's enemy code to compare with the list of unique codes.
+                                                int indexOfGameID = fileContent.IndexOf("name=\"mUnitClass\" value=", match.Index) + 27;
+                                                int indexOfEndGameID = fileContent.IndexOf("/>", indexOfGameID);
+                                                string enemyCode = fileContent.Substring(indexOfGameID, indexOfEndGameID - indexOfGameID);
+
+                                                //Loops as many times as there are unique enemies.
+                                                for (int i = 0; i < uniqueEnemyCodes.Count; i++)
+                                                    {
+                                                    //Checks whether the current enemy code is present at the index of the loop value within the list of codes.
+                                                    if (uniqueEnemyCodes[i] == enemyCode)
+                                                        {
+                                                        //Sets the current enemy for replacement to the enemy in the list at the position of the loop value.
+                                                        currentEnemy = newEnemies[i];
+
+                                                        //Increments the enemyOccurrences value at the position of the loop value for adding to the TXT file later.
+                                                        enemyOccurrences[i]++;
+
+                                                        //Stores the current loop value to be used as an index.
+                                                        currentEnemySpot = i;
+                                                        }
+                                                    }
+
+                                                //Stores the currently selected enemy's XML data.
+                                                string newXMLData = currentEnemy!.xmlData;
+
+                                                //Adds current enemy info and old enemy position values to the new file string.
+                                                xmlNewFile += newXMLData;
+                                                xmlNewFile += organizeXML(fileContent, match.Index, exemptName, lifeRandom, currentEnemy, lifeMult);
+
+                                                endOfEnemyIndex += 1;
+
+                                                //Checks if this is the first occurrence of the current match to add that enemy's TXT data to the TXT file.
+                                                if (enemyOccurrences[currentEnemySpot] == 1)
+                                                    {
+                                                    //Stores the currently selected enemy's TXT data.
+                                                    string newTXTData = currentEnemy.txtData;
+
+                                                    //Adds the currently numbered STRUCT.
+                                                    txtNewFile += "[STRUCT" + string.Format("{0:0000}", currentStruct) + "]\r\n";
+
+                                                    //Updates the STRUCT value.
+                                                    currentStruct += 1;
+
+                                                    //Adds the structured TXT data.
+                                                    txtNewFile += newTXTData;
+                                                    txtNewFile += "\r\n\r\n";
+                                                    }
+                                                }
+                                            for (int i = 0; i < uniqueEnemyCodes.Count; i++)
+                                                {
+                                                if (enemyOccurrences[i] > 0)
+                                                    {
+                                                    //Adds all enemies and their quantity after the level name.
+                                                    spoilerLog += enemyOccurrences[i] + " " + newEnemies[i].name + ", ";
+                                                    }
+                                                }
+
+                                            //Adds new line to spoiler log.
+                                            spoilerLog += "\r\n";
+
+                                            }
+                                        else if (this.radioButton1.Checked)
+                                            {
+                                            Console.WriteLine("File " + file + " reached for non-varied multiple randomization.");
+
+                                            //Randomly selected enemy whose info will be used to replace the original enemy.
+                                            Enemy currentEnemy = enemyList[enemyRandom.Next(0, enemyList.Count)];
+
+                                            //Loop through each found enemy
+                                            foreach (Match match in enemyCount)
+                                                {
+                                                //Stores the position of the end of the current enemy's data.
+                                                endOfEnemyIndex = fileContent.IndexOf("</classref>", match.Index) + 25;
+
+                                                //Stores the currently selected enemy's XML data.
+                                                string newXMLData = currentEnemy.xmlData;
+
+                                                //Adds current enemy info, old enemy position, and randomized life values to the new file string.
+                                                xmlNewFile += newXMLData;
+                                                xmlNewFile += organizeXML(fileContent, match.Index, exemptName, lifeRandom, currentEnemy, lifeMult);
+
+                                                endOfEnemyIndex += 1;
+
+                                                }
+
+                                            //Adds the selected enemy and its quantity.
+                                            spoilerLog += enemyCount.Count + " " + currentEnemy.name;
+                                            spoilerLog += "\r\n";
+
+                                            //Stores the currently selected enemy's TXT data.
+                                            string newTXTData = currentEnemy.txtData;
+
+                                            //Adds the currently numbered STRUCT.
+                                            txtNewFile += "[STRUCT" + string.Format("{0:0000}", currentStruct) + "]\r\n";
+
+                                            //Updates the STRUCT value.
+                                            currentStruct += 1;
+
+                                            //Adds the structured TXT data.
+                                            txtNewFile += newTXTData;
+                                            txtNewFile += "\r\n\r\n";
+                                            }
+
+                                        if (this.radioButton6.Checked && (file.Contains("s114_em") || file.Contains("s108_em")))
+                                            {
+                                            enemyList.Add(wesker53);
+                                            enemyList.Add(wesker63);
+                                            enemyList.Add(weskerFinal);
+                                            }
+
+                                        //Adds the TXT file string to a unified variable.
+                                        finishedTXT = txtNewFile;
+
+                                        //Adds the end of the XML data to the file string.
+                                        xmlNewFile += fileContent.Substring(endOfEnemyIndex, fileContent.Length - endOfEnemyIndex);
+
+                                        //Adds finished TXT file, with the total number of present STRUCTs inserted to the structCount at the beginning.
+                                        finishedTXT = finishedTXT.Insert(57, currentStruct.ToString());
+                                        }
+                                    //No enemies path.
+                                    else
+                                        {
+                                        //Sets the new XML file to be the same content as the old XML file.
+                                        xmlNewFile = fileContent;
+
+                                        //Adds the consistent start of TXT data to new TXT file.
+                                        txtNewFile += txtStart;
+
+                                        //Adds a 1 for the only STRUCT present.
+                                        txtNewFile += "1";
+
+                                        //Adds the consistent data for no enemies.
+                                        txtNewFile += txtNoEnemy;
+
+                                        //Adds the TXT file data to a universal variable.
+                                        finishedTXT += txtNewFile;
                                         }
 
-                                    //Adds the TXT file string to a unified variable.
-                                    finishedTXT = txtNewFile;
+                                    //Sets the XML file name to be the same as the original XML file.
+                                    string xmlFileName = Path.GetFileName(file);
 
-                                    //Adds the end of the XML data to the file string.
-                                    xmlNewFile += fileContent.Substring(endOfEnemyIndex, fileContent.Length - endOfEnemyIndex);
+                                    //Constructs the TXT file name from the XML file, replacing the file extension.
+                                    string txtFileName = xmlFileName.Substring(0, xmlFileName.Length - 3) + "txt";
 
-                                    //Adds finished TXT file, with the total number of present STRUCTs inserted to the structCount at the beginning.
-                                    finishedTXT = finishedTXT.Insert(57, currentStruct.ToString());
+                                    //Sets the file path for the XML file.
+                                    string xmlFilePath = Path.GetDirectoryName(file) + @"\" + xmlFileName;
+
+                                    //Sets the file path for the TXT file.
+                                    string txtFilePath = Path.GetDirectoryName(file) + @"\" + txtFileName;
+
+                                    //Writes the XML file.
+                                    File.WriteAllText(xmlFilePath, xmlNewFile);
+
+                                    //Writes the TXT file.
+                                    File.WriteAllText(txtFilePath, finishedTXT);
                                     }
-                                //No enemies path.
-                                else
-                                    {
-                                    //Sets the new XML file to be the same content as the old XML file.
-                                    xmlNewFile = fileContent;
-
-                                    //Adds the consistent start of TXT data to new TXT file.
-                                    txtNewFile += txtStart;
-
-                                    //Adds a 1 for the only STRUCT present.
-                                    txtNewFile += "1";
-
-                                    //Adds the consistent data for no enemies.
-                                    txtNewFile += txtNoEnemy;
-
-                                    //Adds the TXT file data to a universal variable.
-                                    finishedTXT += txtNewFile;
-                                    }
-
-                                //Sets the XML file name to be the same as the original XML file.
-                                string xmlFileName = Path.GetFileName(file);
-
-                                //Constructs the TXT file name from the XML file, replacing the file extension.
-                                string txtFileName = xmlFileName.Substring(0, xmlFileName.Length - 3) + "txt";
-
-                                //Sets the file path for the XML file.
-                                string xmlFilePath = Path.GetDirectoryName(file) + @"\" + xmlFileName;
-
-                                //Sets the file path for the TXT file.
-                                string txtFilePath = Path.GetDirectoryName(file) + @"\" + txtFileName;
-
-                                //Writes the XML file.
-                                File.WriteAllText(xmlFilePath, xmlNewFile);
-
-                                //Writes the TXT file.
-                                File.WriteAllText(txtFilePath, finishedTXT);
                                 }
                             }
+                        }
+                    if(file.Contains("s105_Item.lot.xml"))
+                        {
+                        softlockFixFileContent = "";
+                        string fileContent = File.ReadAllText(file);
+                        softlockFixFileContent += fileContent.Substring(0, 160);
+                        softlockFixFileContent += "23\">\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt051A\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"27197772\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"10360.7700195313\" y=\"900.8670654297\" z=\"-3345.7900390625\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"Pos\" x=\"10360.7700195313\" y=\"900.8670654297\" z=\"-3345.7900390625\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"false\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"25.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1306\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"-1\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"0\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>";
+                        softlockFixFileContent += fileContent.Substring(164);
+                        }
+                    if(file.Contains("s500_item.lot.xml"))
+                        {
+                        softlockFixFileContent = "";
+                        string fileContent = File.ReadAllText(file);
+                        softlockFixFileContent += fileContent.Substring(0, 160);
+                        softlockFixFileContent += "21\">\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt0516\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2109489016\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"-48.0000000000\" y=\"0.0000000000\" z=\"5107.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"2.0000000000\" y=\"2.0000000000\" z=\"2.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"mPosition\" x=\"-22.0000000000\" y=\"5.0000000000\" z=\"5100.0000000000\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"-0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"false\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1302\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"-1\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"8\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>";
+                        softlockFixFileContent += fileContent.Substring(164);
+                        }
+                    if(file.Contains("s501_item.lot.xml"))
+                        {
+                        softlockFixFileContent = "";
+                        string fileContent = File.ReadAllText(file);
+                        softlockFixFileContent += fileContent.Substring(0, 160);
+                        softlockFixFileContent += "25\">\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt0517\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"825252979\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"-223.2292175293\" y=\"-2090.5715332031\" z=\"14199.1289062500\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"-0.0000000000\" y=\"2.0943949223\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"2.0000000000\" y=\"2.0000000000\" z=\"2.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"1\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"Pos\" x=\"-223.2292175293\" y=\"-2090.5715332031\" z=\"14199.1289062500\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"-0.0000000000\" y=\"2.0943949223\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"false\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1290\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"40\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"132\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"8\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>";
+                        softlockFixFileContent += fileContent.Substring(164);
+                        }
+                    if(file.Contains("s504_item.lot.xml"))
+                        {
+                        softlockFixFileContent = "";
+                        string fileContent = File.ReadAllText(file);
+                        softlockFixFileContent += fileContent.Substring(0, 160);
+                        softlockFixFileContent += "18\">\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt041c\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2107044388\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"247.8923797607\" y=\"365.8226928711\" z=\"-786.2692871094\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"1.6217730045\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"Pos\" x=\"247.8923797607\" y=\"365.8226928711\" z=\"-786.2692871094\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"0.0000000000\" y=\"1.6217730045\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"true\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1307\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"40\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"71\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"1\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>";
+                        softlockFixFileContent += fileContent.Substring(164);
+                        }
+                    if(file.Contains("s505_item.lot.xml"))
+                        {
+                        softlockFixFileContent = "";
+                        string fileContent = File.ReadAllText(file);
+                        softlockFixFileContent += fileContent.Substring(0, 160);
+                        softlockFixFileContent += "33\">\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt0304\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"15006800\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"-834.4921972656\" y=\"400.3587646484\" z=\"5517.5610351563\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"Pos\" x=\"-834.4921972656\" y=\"400.3587646484\" z=\"5517.5610351563\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"false\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1287\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"-1\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"1\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>\r\n\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoItem\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uIt0304\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"381867577\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"15006800\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mPosition\" x=\"-3760.4921972656\" y=\"400.3587646484\" z=\"5504.5610351563\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mLife\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<class name=\"mItemSet\" type=\"1492295384\">\r\n\t\t\t\t\t<vector3 name=\"Pos\" x=\"-3760.4921972656\" y=\"400.3587646484\" z=\"5504.5610351563\"/>\r\n\t\t\t\t\t<vector3 name=\"Ang\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<bool name=\"AutoPosition\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"HitAuto\" value=\"true\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckOba\" value=\"false\"/>\r\n\t\t\t\t\t<bool name=\"NoCheckEff\" value=\"false\"/>\r\n\t\t\t\t\t<classref name=\"Shape\" type=\"1035932488\">\r\n\t\t\t\t\t\t<string name=\"Name\" value=\"\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckAngle\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckRange\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"CheckToward\" value=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<bool name=\"AngleFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<bool name=\"TowardFlag\" value=\"false\"/>\r\n\t\t\t\t\t\t<vector3 name=\"Cone.mCenterPos\" x=\"0.0000000000\" y=\"-180.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mHeight\" value=\"270.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mTopRadius\" value=\"220.0000000000\"/>\r\n\t\t\t\t\t\t<f32 name=\"Cone.mBottomRadius\" value=\"20.0000000000\"/>\r\n\t\t\t\t\t</classref>\r\n\t\t\t\t\t<vector3 name=\"SetOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<s16 name=\"ItemFlagNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"ItemId\" value=\"1288\"/>\r\n\t\t\t\t\t<s32 name=\"ItemNum\" value=\"-1\"/>\r\n\t\t\t\t\t<u16 name=\"SetType\" value=\"0\"/>\r\n\t\t\t\t\t<s16 name=\"SetLotNo\" value=\"-1\"/>\r\n\t\t\t\t\t<s16 name=\"SetNo\" value=\"-1\"/>\r\n\t\t\t\t\t<u8 name=\"EffType\" value=\"1\"/>\r\n\t\t\t\t\t<vector3 name=\"EffOffset\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t\t<u8 name=\"LevelPower\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelFireSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelReloadSpeed\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulletMax\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelBulrRate\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelCritical\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelThrough\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelRange\" value=\"0\"/>\r\n\t\t\t\t\t<u8 name=\"LevelScope\" value=\"0\"/>\r\n\t\t\t\t</class>\r\n\t\t\t</classref>\r\n\t\t</classref>";
+                        softlockFixFileContent += fileContent.Substring(164);
+                        }
+                    if(randomizeItemCheckBox.Checked == false && softlockFixFileContent != "")
+                        {
+                        string softlockFileName = Path.GetFileName(file);
+                        string softlockFilePath = Path.GetDirectoryName(file) + @"\" + softlockFileName;
+                        File.WriteAllText(softlockFilePath, softlockFixFileContent);
+                        }
+                    }
+                if(randomizeItemCheckBox.Checked)
+                    {
+                    //Checks whether current file is an item file.
+                    if (file.ToLower().Contains("_item.lot.xml"))
+                        {
+                        string fileContent = "";
+
+                        //Checks whether the softlock fix is not empty to then use as the basis for randomization.
+                        if(softlockFixFileContent != "")
+                            {
+                            fileContent = softlockFixFileContent;
+                            }
+                        else
+                            {
+                            fileContent = File.ReadAllText(file);
+                            }
+
+                        //Resets newItemFile to an empty string.
+                        newItemFile = "";
+                        
+                        //String for comparison to find indexes.
+                        string itemID = "<u16 name=\"ItemId\" value=\"";
+                        string itemQuantity = "<s32 name=\"ItemNum\" value =\"";
+
+                        int endOfItemIndex = 0;
+
+                        //Collection of matches for finding each individual item in the file.
+                        MatchCollection items = Regex.Matches(fileContent, itemID);
+
+                        foreach(Match item in items)
+                            {
+                            //Stores the index right after the current item's ID.
+                            int prevItemIndex = fileContent.IndexOf("\"/>", item.Index);
+
+                            //Stores the ID of the current item.
+                            int prevItem = Convert.ToInt32(fileContent.Substring(item.Index + 26, prevItemIndex - (item.Index + 26)));
+
+                            //Checks whether current item is not a Key Item, to ensure Key Items do not get replaced.
+                            if(prevItem < 1283 || prevItem > 1330)
+                                {
+                                //Randomly picks an item from the list to swap in place of the original.
+                                string currentItem = itemList.ElementAt(itemRandom.Next(0, itemList.Count)).Value;
+
+                                //Adds the text from the last item (or start of file) up to the current item's ID.
+                                newItemFile += fileContent.Substring(endOfItemIndex, item.Index - endOfItemIndex + 26);
+
+                                //Adds the new item's ID.
+                                newItemFile += currentItem;
+
+                                if (randomizeQuantityCheckBox.Checked)
+                                    {
+                                    prevItemIndex -= 1;
+                                    int quantityIndex = prevItemIndex + 35;
+                                    int quantityModifier = 1;
+                                    int currentItemNum = Convert.ToInt32(currentItem);
+                                    newItemFile += fileContent.Substring(prevItemIndex, 35);
+
+                                    if (currentItemNum >= 256 && currentItemNum <= 357)
+                                        {
+                                        //Weapons and eggs
+
+                                        }
+                                    else if (currentItemNum >= 513 && currentItemNum <= 529)
+                                        {
+                                        //Ammo
+
+                                        }
+                                    else if (currentItemNum >= 771 && currentItemNum <= 779)
+                                        {
+                                        //Healing
+
+                                        }
+                                    }
+                                }
+                            else
+                                {
+                                //Adds the original item's info to the text file (for Key Items).
+                                newItemFile += fileContent.Substring(endOfItemIndex, item.Index - endOfItemIndex + 30);
+                                }
+
+                            endOfItemIndex = prevItemIndex;
+                            }
+
+                        //Adds the end of the original file to the new one.
+                        newItemFile += fileContent.Substring(endOfItemIndex);
+
+                        //Grabs file name of original item file.
+                        string itemFileName = Path.GetFileName(file);
+
+                        //Grabs path of original item file.
+                        string itemFilePath = Path.GetDirectoryName(file) + @"\" + itemFileName;
+
+                        //Outputs the new item text file.
+                        File.WriteAllText(itemFilePath, newItemFile);
                         }
                     }
                 }
@@ -626,7 +1021,7 @@ namespace re5_randomizer_gui
                 }
 
             //String containing the path to the folder the program is in, along with the file name for the spoiler log.
-            string spoilerLogLocation = Environment.CurrentDirectory + "\\" + "Spoiler Log " + DateTime.Now.ToString("M/d/yyyy HH-mm-ss") + ".txt";
+            string spoilerLogLocation = Environment.CurrentDirectory + "\\" + "Spoiler Log " + DateTime.Now.ToString("MMM d HH-mm-ss") + ".txt";
 
             //Writes the spoiler log to a file at the location.
             File.WriteAllText(spoilerLogLocation, spoilerLog);
