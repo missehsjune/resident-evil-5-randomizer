@@ -12,6 +12,8 @@ This program was made in .NET Framework 4.7.2 so [installing the .NET Framework 
 
 ## Usage
 
+**[For a video tutorial of downloading and using the randomizer, watch this.](https://youtu.be/ZLdQ5eCsIsE)**
+
 First, download the latest version from the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases), as well as [ARCtool by FluffyQuack](https://www.fluffyquack.com/tools/ARCtool.rar).
 
 (Optional/Recommended) Make a backup of the level files (s100.arc through s512.arc) if you want to be able to revert to vanilla enemy spawns, or to reset enemy variety. These files can be located within the game install at *\steamapps\common\Resident Evil 5\nativePC_MT\Image\Archive*.
