@@ -10,6 +10,8 @@ Look at the [release page](https://github.com/missehsjune/resident-evil-5-random
 
 This program was made in .NET Framework 4.7.2 so [installing the .NET Framework 4.7.2 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472) should be sufficient.
 
+**[I highly recommend installing the RE5 QOL Fixes and Maluc's patch as they help make RE5 playable on modern systems and offer a variety of helpful options](https://steamcommunity.com/sharedfiles/filedetails/?id=1533171339)**
+
 ## Usage
 
 **[For a video tutorial of downloading and using the randomizer, watch this.](https://youtu.be/ZLdQ5eCsIsE)**
