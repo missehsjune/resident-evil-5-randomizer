@@ -142,7 +142,6 @@ namespace re5_randomizer_gui
             {
             //Creation of spoiler log for users to check to see what enemies were put in game, as well as checking what settings were used to randomize.
             string spoilerLog = "";
-            string randomNumbers = "";
 
             //Grab value for the random seed from the numberbox value.
             int randomSeed = Convert.ToInt32(this.numericUpDown1.Value);
@@ -675,17 +674,11 @@ namespace re5_randomizer_gui
                                             {
                                             int currentRand = enemyRandom.Next(0, safeEnemies.Count);
                                             currentEnemy = safeEnemies[currentRand];
-
-                                            randomNumbers += currentRand.ToString();
-                                            randomNumbers += "\r\n";
                                             }
                                         else
                                             {
                                             int currentRand = enemyRandom.Next(0, enemyList.Count);
                                             currentEnemy = enemyList[currentRand];
-
-                                            randomNumbers += currentRand.ToString();
-                                            randomNumbers += "\r\n";
                                             }
 
                                         //Randomly selected enemy whose info will be used to replace the original enemy.
@@ -787,18 +780,12 @@ namespace re5_randomizer_gui
                                                         //Adds a new randomly selected enemy to the list of enemies to swap into the game.
                                                         int currentRand = enemyRandom.Next(0, safeEnemies.Count);
                                                         newEnemies.Add(safeEnemies[currentRand]);
-
-                                                        randomNumbers += currentRand.ToString();
-                                                        randomNumbers += "\r\n";
                                                         }
                                                     else
                                                         {
                                                         //Adds a new randomly selected enemy to the list of enemies to swap into the game.
                                                         int currentRand = enemyRandom.Next(0, enemyList.Count);
                                                         newEnemies.Add(enemyList[currentRand]);
-
-                                                        randomNumbers += currentRand.ToString();
-                                                        randomNumbers += "\r\n";
                                                         }
 
                                                     //Adds a new entry in the list of integers for the current enemy's number of appearances.
@@ -889,18 +876,12 @@ namespace re5_randomizer_gui
                                                 //Randomly selected enemy whose info will be used to replace the original enemy.
                                                 int currentRand = enemyRandom.Next(0, safeEnemies.Count);
                                                 currentEnemy = safeEnemies[currentRand];
-
-                                                randomNumbers += currentRand.ToString();
-                                                randomNumbers += "\r\n";
                                                 }
                                             else
                                                 {
                                                 //Randomly selected enemy whose info will be used to replace the original enemy.
                                                 int currentRand = enemyRandom.Next(0, safeEnemies.Count);
                                                 currentEnemy = enemyList[currentRand];
-
-                                                randomNumbers += currentRand.ToString();
-                                                randomNumbers += "\r\n";
                                                 }
 
                                             //Loop through each found enemy
@@ -1212,10 +1193,6 @@ namespace re5_randomizer_gui
 
             //Writes the spoiler log to a file at the location.
             File.WriteAllText(spoilerLogLocation, spoilerLog);
-
-            string randomNumbersLoc = Environment.CurrentDirectory + "\\" + "Random Numbers " + DateTime.Now.ToString("MMM d HH-mm-ss") + ".txt";
-
-            File.WriteAllText(randomNumbersLoc, randomNumbers);
 
             //Strings to be used in the message box that appears upon successful randomization.
             string boxMessage = "Randomization complete!";
