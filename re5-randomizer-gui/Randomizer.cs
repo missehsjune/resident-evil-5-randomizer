@@ -278,7 +278,7 @@ namespace re5_randomizer_gui
                 enemyList.Add(new Enemy { gameID = "uEm83", minLife = 1250, maxLife = 2500, name = "Zipped Jill", txtData = "Hash = 1277537940\r\nName = mName; Type = string; unknown = 128; Size = 4\r\nName = mParentName; Type = string; unknown = 0; Size = 4\r\nName = mParentNo; Type = s32; unknown = 0; Size = 4\r\nName = mOrder; Type = u32; unknown = 0; Size = 4\r\nName = mAngle; Type = vector3; unknown = 0; Size = 16\r\nName = mScale; Type = vector3; unknown = 0; Size = 16\r\nName = PatternNo; Type = u32; unknown = 0; Size = 4\r\nName = mJumpInit; Type = u32; unknown = 0; Size = 4\r\nName = mInAir; Type = bool; unknown = 0; Size = 1\r\nName = mNoLimitCheck; Type = bool; unknown = 0; Size = 1\r\nName = mModelType; Type = u32; unknown = 0; Size = 4\r\nName = mMontageNo; Type = u32; unknown = 0; Size = 4\r\nName = mSearchType; Type = u32; unknown = 0; Size = 4\r\nName = mSearchForward; Type = f32; unknown = 0; Size = 4\r\nName = mSearchCircle; Type = f32; unknown = 0; Size = 4\r\nName = mSearchHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepType; Type = u32; unknown = 0; Size = 4\r\nName = mAreaKeepDist; Type = f32; unknown = 0; Size = 4\r\nName = mAreaKeepHitNo; Type = u32; unknown = 0; Size = 4\r\nName = mIsFindPL; Type = bool; unknown = 0; Size = 1\r\nName = mIsGoto; Type = bool; unknown = 0; Size = 1\r\nName = mIsGotoAng; Type = bool; unknown = 0; Size = 1\r\nName = mGotoPos; Type = vector3; unknown = 0; Size = 16\r\nName = mGotoAng; Type = vector3; unknown = 0; Size = 16\r\nName = mIsForNet; Type = bool; unknown = 0; Size = 1\r\nName = mSArg00; Type = s32; unknown = 0; Size = 4\r\nName = mSArg01; Type = s32; unknown = 0; Size = 4\r\nName = mIsScrHitOff; Type = bool; unknown = 0; Size = 1\r\nName = mbForceMoveFSM; Type = bool; unknown = 0; Size = 1\r\nName = SUPER MODE; Type = bool; unknown = 0; Size = 1\r\nName = mPosition; Type = vector3; unknown = 0; Size = 16\r\nName = mLife; Type = u32; unknown = 0; Size = 4", xmlData = "\t\t<classref type=\"1637199632\">\r\n\t\t\t<s32 name=\"mID\" value=\"0\"/>\r\n\t\t\t<string name=\"mInfoClass\" value=\"cSetInfoEm83\"/>\r\n\t\t\t<string name=\"mUnitClass\" value=\"uEm83\"/>\r\n\t\t\t<classref name=\"mpInfo\" type=\"1277537940\">\r\n\t\t\t\t<string name=\"mName\" value=\"\"/>\r\n\t\t\t\t<string name=\"mParentName\" value=\"\"/>\r\n\t\t\t\t<s32 name=\"mParentNo\" value=\"-2107236408\"/>\r\n\t\t\t\t<u32 name=\"mOrder\" value=\"4\"/>\r\n\t\t\t\t<vector3 name=\"mAngle\" x=\"0.0000000000\" y=\"-0.0835819989\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mScale\" x=\"1.0000000000\" y=\"1.0000000000\" z=\"1.0000000000\"/>\r\n\t\t\t\t<u32 name=\"PatternNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mJumpInit\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mInAir\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mNoLimitCheck\" value=\"false\"/>\r\n\t\t\t\t<u32 name=\"mModelType\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mMontageNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mSearchType\" value=\"1\"/>\r\n\t\t\t\t<f32 name=\"mSearchForward\" value=\"0.0000000000\"/>\r\n\t\t\t\t<f32 name=\"mSearchCircle\" value=\"1000.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mSearchHitNo\" value=\"0\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepType\" value=\"0\"/>\r\n\t\t\t\t<f32 name=\"mAreaKeepDist\" value=\"0.0000000000\"/>\r\n\t\t\t\t<u32 name=\"mAreaKeepHitNo\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsFindPL\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGoto\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mIsGotoAng\" value=\"false\"/>\r\n\t\t\t\t<vector3 name=\"mGotoPos\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<vector3 name=\"mGotoAng\" x=\"0.0000000000\" y=\"0.0000000000\" z=\"0.0000000000\"/>\r\n\t\t\t\t<bool name=\"mIsForNet\" value=\"true\"/>\r\n\t\t\t\t<s32 name=\"mSArg00\" value=\"0\"/>\r\n\t\t\t\t<s32 name=\"mSArg01\" value=\"0\"/>\r\n\t\t\t\t<bool name=\"mIsScrHitOff\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"mbForceMoveFSM\" value=\"false\"/>\r\n\t\t\t\t<bool name=\"SUPER MODE\" value=\"false\"/>" });
 
                 //Adds selected option.
-                spoilerLog += "All enemies\r\n";
+                spoilerLog += "All main game enemies\r\n";
                 }
             else
                 {
@@ -395,6 +395,8 @@ namespace re5_randomizer_gui
             //Checks for which item checkboxes have been selected, and adds the respective items to the dictionary.
             if(randomizeItemCheckBox.Checked)
                 {
+                spoilerLog += "\r\nItem Randomization enabled.\r\n";
+
                 itemList.Add("Hand Grenade", "262");
                 itemList.Add("Incendiary Grenade", "263");
                 itemList.Add("Flash Grenade", "264");
@@ -422,6 +424,8 @@ namespace re5_randomizer_gui
                 itemList.Add("Herb (G+R)", "777");
                 if (keyItemCheckBox.Checked)
                     {
+                    spoilerLog += "Key items added to pool.\r\n";
+
                     itemList.Add("Furnace Key", "1283");
                     itemList.Add("Execution Ground Key", "1285");
                     itemList.Add("Port Key", "1286");
@@ -443,6 +447,8 @@ namespace re5_randomizer_gui
                     }
                 if (treasureItemCheckBox.Checked)
                     {
+                    spoilerLog += "Treasure items added to pool.\r\n";
+
                     itemList.Add("Gold (Large)", "1025");
                     itemList.Add("Gold (Small)", "1026");
                     itemList.Add("Gold Bars", "1027");
@@ -500,10 +506,10 @@ namespace re5_randomizer_gui
                     }
                 if (unsafeItemCheckBox.Checked)
                     {
+                    spoilerLog += "Unsafe items added to pool.\r\n";
+
                     itemList.Add("Knife 1", "257");
                     itemList.Add("Knife 2", "270");
-                    itemList.Add("Longbow", "271");
-                    itemList.Add("Gatling Gun 1", "277");
                     itemList.Add("Flamethrower", "289");
                     itemList.Add("Knife 3", "291");
                     itemList.Add("Knife 4", "292");
@@ -535,6 +541,8 @@ namespace re5_randomizer_gui
                     }
                 if (dlcItemCheckbox.Checked)
                     {
+                    spoilerLog += "DLC items added to pool.\r\n";
+
                     itemList.Add("Px4", "287");
                     itemList.Add("Score Star (Small)", "1063");
                     itemList.Add("Score Star (Medium)", "1064");
@@ -561,10 +569,20 @@ namespace re5_randomizer_gui
                     }
                 if (weaponCheckBox.Checked)
                     {
+                    spoilerLog += "Weapons added to pool.\r\n";
+
                     foreach (KeyValuePair<string, string> entry in weaponList)
                         {
                         itemList.Add(entry.Key, entry.Value);
                         }
+                    }
+                if(minesLanternCheckBox.Checked)
+                    {
+                    spoilerLog += "Keep 2-1 lantern enabled.\r\n";
+                    }
+                if(startingCaseWeaponCheckbox.Checked)
+                    {
+                    spoilerLog += "Keep starting case as weapons enabled.\r\n";
                     }
                 }
 
