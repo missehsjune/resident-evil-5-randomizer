@@ -605,7 +605,7 @@ namespace re5_randomizer_gui
                 {
                 //String for adding items to prevent softlocks for certain randomization settings.
                 string softlockFixFileContent = "";
-                if (randomizeEnemiesCheckBox.Checked)
+                if(randomizeEnemiesCheckBox.Checked)
                     {
                     //Check to ensure file is an enemy spawner file.
                     if(file.Contains("_em"))
@@ -898,7 +898,7 @@ namespace re5_randomizer_gui
                                             else
                                                 {
                                                 //Randomly selected enemy whose info will be used to replace the original enemy.
-                                                int currentRand = enemyRandom.Next(0, safeEnemies.Count);
+                                                int currentRand = enemyRandom.Next(0, enemyList.Count);
                                                 currentEnemy = enemyList[currentRand];
                                                 }
 
