@@ -196,7 +196,7 @@ namespace re5_randomizer_gui
                     listOfFiles.Add("s705");
                     listOfFiles.Add("s706");
 
-                    spoilerLog += "All main game + DLC stages";
+                    spoilerLog += "All main game + DLC stages\r\n";
                     }
                 else
                     {
