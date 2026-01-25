@@ -17,13 +17,13 @@ This program was made in .NET Framework 4.7.2 so [installing the .NET Framework 
 
 **[For a video tutorial of downloading and using the randomizer, watch this.](https://youtu.be/ZLdQ5eCsIsE)**
 
-First, download the latest version from the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases), as well as [ARCtool by FluffyQuack](https://www.fluffyquack.com/tools/ARCtool.rar).
+1. Download the latest version from the [release page](https://github.com/missehsjune/resident-evil-5-randomizer/releases), as well as [ARCtool by FluffyQuack](https://www.fluffyquack.com/tools/ARCtool.rar).
 
-(Optional/Recommended) Make a backup of the level files (s100.arc through s512.arc) if you want to be able to revert to vanilla enemy spawns, or to reset enemy variety. These files can be located within the game install at *\steamapps\common\Resident Evil 5\nativePC_MT\Image\Archive*.
+2. Make a backup of the level files (s100.arc-s804.arc). If you wish to randomize your game a second time, restore the levels back to normal by replacing the game files with the backup before randomizing, otherwise unintended behaviour can occur.
 
-Next, copy ARCtool.exe into the location of the level files. Launch the program and select the folder containing ARCtool.exe.
+3. Copy ARCtool.exe into the location of the level files. Launch the program and select the folder containing ARCtool.exe.
 
-Lastly, select the randomization options, explained below, that you want applied to your game, and click generate. 
+4. select the randomization options, explained below, that you want applied to your game, and click generate. 
 
 For randomized co-op playthroughs, choosing the same options and using the same seed number should work (testing required), otherwise, have one player randomize their game, and then send the other player their level files.
 
@@ -67,22 +67,22 @@ Check this box to have item randomization occur. By default, placed items will b
 
 Selecting checkboxes below this option will *add* additional items to the list, so select all of them for the largest pool of items.
 
-**Include Key Items**
+**Include Key Items**  
 Check this box to include items necessary to progress to be randomized in to levels. They usually will not be usable unless you get lucky and get say, the Guard's Key in Chapter 1-2 near the Chainsaw Majini fight.
 
-**Include Treasures**
+**Include Treasures**  
 Check this box to include any and all treasure items to be randomized in to levels. Gems, bugs, etc. will all take the place of items. There are MANY treasures, so money won't be a problem, but there will be less of other items.
 
-**Include Unsafe Items**
+**Include Unsafe Items**  
 Check this box to include many items never meant to be acquirable in to levels. The player character's knives, Chris' gatling gun, Sheva's bow (both usable on the wrong character), as well as enemy weapons and more. Some items can cause unintended behaviour when picked up.
 
-**Include DLC Items**
+**Include DLC Items**  
 This will randomize in DLC key items, weapons, etc.
 
-**Keep 2-1 Lantern**
+**Keep 2-1 Lantern**  
 Check this box to leave the lantern in the mines in place. With the filter over the game normally, it can be too dark in the mines to see, so this option lets players guarantee the lantern during that section.
 
-**Keep starting case as weapons**
+**Keep starting case as weapons**  
 For fresh save files, the starting case of weapons Reynard provides will still have random weapons if this is selected. Having a weapon on the player character in solo, or both characters in co-op is necessary to continue.
 
 
