@@ -41,25 +41,32 @@ Check this box to have enemy randomization occur. The randomization options belo
 
 **Enemy Variety**
 
-*Single enemy per spawn group* will turn every spawn group in the game, regardless of it's original variety, to be a single enemy (5 regular majini will become 5 chainsaw majini, for example).
+**Single enemy per spawn group**  
+This will turn every spawn group in the game, regardless of it's original variety, to be a single enemy (5 regular majini will become 5 chainsaw majini, for example).
 
-*Match original game's variety* will randomize spawn groups with two or more enemies into having the same number of new enemies (2 dogs and 2 birds may become 2 gatling gun majini and 2 crocodiles, for example).
+**Match original game's variety**  
+This will randomize spawn groups with two or more enemies into having the same number of new enemies (2 dogs and 2 birds may become 2 gatling gun majini and 2 crocodiles, for example).
 
 *MATCH ORIGINAL GAME'S VARIETY REQUIRES FRESH FILES TO WORK. IF YOU HAVE RANDOMIZED THE FILES WITH THE FIRST OPTION, THE SECOND OPTION CANNOT ADD VARIETY BACK.*
 
 **Levels to Randomize**
 
-*Only safe levels* will skip randomizing certain levels that can cause problems, such as Jill replacing an enemy that drops a kill.
+**Only safe levels**  
+This will skip randomizing certain levels that can cause problems, such as Jill replacing an enemy that drops an item on death.
 
-With version 2.0.0, *all non-guaranteed crash levels* should be safe to use, due to extra key items being placed wherever an enemy would drop that key item. The choice is still available in case users want to be 100% sure.
+**all non-guaranteed crash levels**  
+With version 2.0.0, this setting should be safe to use, due to extra key items being placed wherever an enemy would drop that key item. The choice is still available in case users want to be 100% sure.
 
-*Main game + DLC levels* randomize the same levels as the above option, but also the DLC levels. Lost in Nightmares is fully playable, but a grenade is needed to blow open a wall. Desperate Escape can be beaten, but it may be pretty tough. Softlocks may occur due to enemies dropping keys, might figure out a fix at some point.
+**Main game + DLC levels**  
+This will randomize the same levels as the above option, but also the DLC levels. Lost in Nightmares is fully playable, but a grenade is needed to blow open a wall. Desperate Escape can be beaten, but it may be pretty tough. Softlocks may occur due to enemies dropping keys, might figure out a fix at some point.
 
 **Enemy List to Use**
 
-*Only safe enemies* will only randomize enemies that should never cause problems in to the game.
+**Only safe enemies**  
+This will only randomize enemies that should never cause problems in to the game.
 
-*All enemies*, on the other hand, will include every enemy that doesn't outright crash the game. Some checks are in place to minimize crashing, but crashes can still happen. *If using All enemies, it can be a good idea to reload checkpoints if many enemies are alive in a previous section to minimize crashing problems.*
+**All enemies**
+This will include every enemy that doesn't outright crash the game. Some checks are in place to minimize crashing, but crashes can still happen. *If using All enemies, it can be a good idea to reload checkpoints if many enemies are alive in a previous section to minimize crashing problems.*
 
 **Randomize Items**
 
