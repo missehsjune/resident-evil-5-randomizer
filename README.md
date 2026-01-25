@@ -35,9 +35,13 @@ When randomizing, Windows may ask if you want to run Arctool.exe. Select "Do not
 
 Provide a number for the program to use as the basis for the randomization. Set to the same number as a co-op partner, and use the same settings listed below to ensure co-op playthrough go smoothly.
 
+***
+
 **Randomize Enemies**
 
 Check this box to have enemy randomization occur. The randomization options below will change how the randomization occurs. Enemy variety, which levels will get randomized, and which enemies to use can all be chosen below.
+
+***
 
 **Enemy Variety**
 
@@ -48,6 +52,8 @@ This will turn every spawn group in the game, regardless of it's original variet
 This will randomize spawn groups with two or more enemies into having the same number of new enemies (2 dogs and 2 birds may become 2 gatling gun majini and 2 crocodiles, for example).
 
 *MATCH ORIGINAL GAME'S VARIETY REQUIRES FRESH FILES TO WORK. IF YOU HAVE RANDOMIZED THE FILES WITH THE FIRST OPTION, THE SECOND OPTION CANNOT ADD VARIETY BACK.*
+
+***
 
 **Levels to Randomize**
 
@@ -60,6 +66,8 @@ With version 2.0.0, this setting should be safe to use, due to extra key items b
 **Main game + DLC levels**  
 This will randomize the same levels as the above option, but also the DLC levels. Lost in Nightmares is fully playable, but a grenade is needed to blow open a wall. Desperate Escape can be beaten, but it may be pretty tough. Softlocks may occur due to enemies dropping keys, might figure out a fix at some point.
 
+***
+
 **Enemy List to Use**
 
 **Only safe enemies**  
@@ -68,9 +76,13 @@ This will only randomize enemies that should never cause problems in to the game
 **All enemies**
 This will include every enemy that doesn't outright crash the game. Some checks are in place to minimize crashing, but crashes can still happen. *If using All enemies, it can be a good idea to reload checkpoints if many enemies are alive in a previous section to minimize crashing problems.*
 
+***
+
 **Randomize Items**
 
 Check this box to have item randomization occur. By default, placed items will be replaced with a list of basic items, including healing items, ammo, guns, etc. 
+
+***
 
 Selecting checkboxes below this option will *add* additional items to the list, so select all of them for the largest pool of items.
 
