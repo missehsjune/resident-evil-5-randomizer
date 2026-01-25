@@ -23,7 +23,7 @@ This program was made in .NET Framework 4.7.2 so [installing the .NET Framework 
 
 3. Copy ARCtool.exe into the location of the level files. Launch the program and select the folder containing ARCtool.exe.
 
-4. select the randomization options, explained below, that you want applied to your game, and click generate. 
+4. Select the randomization options, explained below, that you want applied to your game, and click generate. 
 
 For randomized co-op playthroughs, choosing the same options and using the same seed number should work (testing required), otherwise, have one player randomize their game, and then send the other player their level files.
 
